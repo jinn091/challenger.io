@@ -1,21 +1,46 @@
-import { Link } from "@remix-run/react";
-import { SearchIcon } from "../icons";
+import { SerializeFrom } from "@remix-run/node";
+import { Form, Link } from "@remix-run/react";
+import { UserInfo } from "~/model/user.server";
 
-export default function Header(): JSX.Element {
+export default function Header({
+  user,
+}: {
+  user: SerializeFrom<UserInfo> | null;
+}): JSX.Element {
   return (
-    <nav className="shadow-sm shadow-neutral-400 flex items-center justify-between px-8">
-      <Link to="/">
-        <img src="/images/logo.png" alt="logo" width={200} height={50} />
+    <nav className="menu flex justify-between p-2 items-center">
+      <Link
+        to="/"
+        className="flex items-center text-xl font-sans active:scale-95 transition-all gap-1"
+      >
+        <img src="/images/learnio.png" alt="logo" width="40px" />
+        <h1 className=" bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent font-bold">
+          Challenger.io
+        </h1>
       </Link>
 
-      <div className="flex bg-[#2b2a33] items-center px-2 rounded">
-        <input type="text" className="py-1 outline-none" />
-        <SearchIcon className="fill-white" width={20} height={20}/>
-      </div>
-
-      <div>
-        <button>Sign In With Google</button>
-      </div>
+      {user === null ? (
+        <div className="flex gap-2">
+          <Link to="/login" className="button bg-[green]">
+            <p>Log In</p>
+          </Link>
+          <Link to="/register" className="button bg-[blue]">
+            <p>Register</p>
+          </Link>
+        </div>
+      ) : (
+        <div className="flex gap-2 items-center mx-4">
+          <span className="font-bold text-md">Welcome, </span>
+          <span>{user.username}</span>
+          <Form action="/logout" method="post">
+            <button className="p-[2px] bg-gradient-to-r from-blue-500 to-purple-500 rounded">
+              <div className="bg-primary-light dark:bg-primary-dark rounded p-1 px-2 flex flex-col justify-center">
+                <span className="text-sm">Logout</span>
+              </div>
+            </button>
+          </Form>
+        </div>
+      )}
     </nav>
   );
 }

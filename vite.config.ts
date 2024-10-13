@@ -12,8 +12,11 @@ export default defineConfig({
         v3_throwAbortReason: true,
       },
       // Configure routes with flatRoutes
-      routes: async defineRoutes => flatRoutes("routes", defineRoutes), // Adjust path as necessary
+      routes: async (defineRoutes) => flatRoutes("routes", defineRoutes), // Adjust path as necessary
     }),
     tsconfigPaths(),
   ],
+  optimizeDeps: {
+    exclude: ["@mapbox"],
+  },
 });

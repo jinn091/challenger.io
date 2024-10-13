@@ -7,15 +7,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  USER
+  ADMIN
+  SUPER_ADMIN
+}
+
 model User {
-  id                Int      @id @default(autoincrement())
-  name              String
-  email             String   @unique
-  password          String?
-  image             String?
-  subscriber        Int      @default(0)
-  subscribedUsers   String[] @default([])
-  signInWithGoogle  Boolean   @default(false)
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  id            String         @id @default(uuid()) @db.Uuid
+  username      String
+  email         String         @unique
+  profileImage  String
+  role          UserRole       @default(USER)
+  lastLoginIp   String?
+  passwordHash  String
+  sessionTokens SessionToken[] @relation("UserSessionTokens")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model SessionToken {
+  token     String    @id
+  userId    String?   @db.Uuid
+  user      User?     @relation("UserSessionTokens", fields: [userId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  expiredAt DateTime?
 }

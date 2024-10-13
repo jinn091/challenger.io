@@ -7,7 +7,7 @@
 Run the dev server:
 
 ```shellscript
-npm run dev
+pnpm run dev
 ```
 
 ## Deployment
@@ -15,22 +15,24 @@ npm run dev
 First, build your app for production:
 
 ```sh
-npm run build
+pnpm run build
 ```
 
 Then run the app in production mode:
 
 ```sh
-npm start
+pnpm start
 ```
 
-Now you'll need to pick a host to deploy it to.
+## Note 
+
+Remix-flat-route is being used in this project since we don't like much the default route system of remixjs.
 
 ### DIY
 
 If you're familiar with deploying Node applications, the built-in Remix app server is production-ready.
 
-Make sure to deploy the output of `npm run build`
+Make sure to deploy the output of `pnpm run build`
 
 - `build/server`
 - `build/client`
