@@ -29,9 +29,13 @@ export default function Header({
           </Link>
         </div>
       ) : (
-        <div className="flex gap-2 items-center mx-4">
-          <span className="font-bold text-md">Welcome, </span>
-          <span>{user.username}</span>
+        <div className="flex gap-1 items-center mx-4">
+          <div className="flex flex-wrap gap-2">
+            <span className="font-bold text-md">Welcome, </span>
+            <span className="hover:underline">
+              <Link to={"/profile"}>{user.username}</Link>
+            </span>
+          </div>
           <Form action="/logout" method="post">
             <button className="p-[2px] bg-gradient-to-r from-blue-500 to-purple-500 rounded">
               <div className="bg-primary-light dark:bg-primary-dark rounded p-1 px-2 flex flex-col justify-center">

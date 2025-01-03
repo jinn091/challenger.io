@@ -75,6 +75,7 @@ export default function LoginRoute() {
                 name="email"
                 className="w-full outline-none bg-[#cfcece] dark:bg-white"
                 defaultValue={fields?.email ?? ""}
+                placeholder="Email"
               />
             </div>
           </div>
@@ -93,6 +94,7 @@ export default function LoginRoute() {
                 ref={passwordRef}
                 name="password"
                 defaultValue={fields?.password ?? ""}
+                placeholder="Password"
               />
               <button type="button" onClick={passwordHandler}>
                 {showPassword === "show" ? (

@@ -37,7 +37,7 @@ export default function ThemeToggle({ className }: { className: string }) {
 
   return (
     <button className={className} onClick={toggleTheme}>
-      <p>Switch to {dark ? "Light View" : "Dark View"}</p>
+      <p className="hidden md:block">Switch to {dark ? "Light View" : "Dark View"}</p>
       <Theme width={20} height={20} />
     </button>
   );
