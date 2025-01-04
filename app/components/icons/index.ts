@@ -9,14 +9,14 @@ import Username from "./Usename";
 import Battle from "./Battle";
 import LeaderBoard from "./LeaderBoard";
 export {
-  Class,
-  Challenge,
-  Play,
-  Theme,
-  HideIcon,
-  Key,
-  Profile,
-  Username,
-  Battle,
-  LeaderBoard,
+	Class,
+	Challenge,
+	Play,
+	Theme,
+	HideIcon,
+	Key,
+	Profile,
+	Username,
+	Battle,
+	LeaderBoard
 };

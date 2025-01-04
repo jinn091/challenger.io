@@ -4,19 +4,19 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import { flatRoutes } from "remix-flat-routes";
 
 export default defineConfig({
-  plugins: [
-    remix({
-      future: {
-        v3_fetcherPersist: true,
-        v3_relativeSplatPath: true,
-        v3_throwAbortReason: true,
-      },
-      // Configure routes with flatRoutes
-      routes: async (defineRoutes) => flatRoutes("routes", defineRoutes), // Adjust path as necessary
-    }),
-    tsconfigPaths(),
-  ],
-  optimizeDeps: {
-    exclude: ["@mapbox"],
-  },
+	plugins: [
+		remix({
+			future: {
+				v3_fetcherPersist: true,
+				v3_relativeSplatPath: true,
+				v3_throwAbortReason: true
+			},
+			// Configure routes with flatRoutes
+			routes: async defineRoutes => flatRoutes("routes", defineRoutes) // Adjust path as necessary
+		}),
+		tsconfigPaths()
+	],
+	optimizeDeps: {
+		exclude: ["@mapbox"]
+	}
 });
