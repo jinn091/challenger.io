@@ -1,5 +1,10 @@
-import { json, LoaderFunctionArgs, TypedResponse } from "@remix-run/node";
-import { Link, Outlet, useLoaderData } from "@remix-run/react";
+import {
+  json,
+  LinksFunction,
+  LoaderFunctionArgs,
+  TypedResponse,
+} from "@remix-run/node";
+import { Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
 import { authenticate } from "~/model/auth.server";
 import { getUserById, UserInfo } from "~/model/user.server";
 import { SocialMedias, WebHackingMethods } from "~/utils/constant";
@@ -13,7 +18,7 @@ export async function loader({
 }
 
 export default function ProfileLayout(): React.JSX.Element {
-  const { username } = useLoaderData<typeof loader>();
+  const { username, email, note } = useLoaderData<typeof loader>();
 
   return (
     <div className="m-8 flex gap-8 w-full">
@@ -81,11 +86,11 @@ export default function ProfileLayout(): React.JSX.Element {
 
       <div className="flex flex-col gap-4 flex-1">
         <div>
-          <h1 className="text-xl font-bold">{username}</h1>
+          <h1 className="text-xl font-bold">
+            {username} - <small>{"< " + email + " />"}</small>
+          </h1>
           <p>💻 Ethical Hacker</p>
-          <small className="text-gray-500 dark:text-gray-300">
-            🚀 With great power, come great responsibility.
-          </small>
+          <small className="text-gray-500 dark:text-gray-300">{note}</small>
         </div>
 
         <div>
@@ -101,35 +106,47 @@ export default function ProfileLayout(): React.JSX.Element {
                 className="w-[2rem] h-[2rem]"
                 src={`/images/social-icons/${sm}.webp`}
                 alt={sm}
+                key={sm}
               />
             ))}
           </div>
         </div>
 
-        <div>
-          <ul className="flex gap-4 border-b border-gray-700">
-            <li className="p-2">
-              <Link to={"/"}>
-                <p>Profile</p>
-              </Link>
-            </li>
-            <li className="p-2">
-              <Link to={"/"}>
-                <p>Challenges</p>
-              </Link>
-            </li>
-            <li className="p-2">
-              <Link to={"/"}>
-                <p>Completed Challenges</p>
-              </Link>
-            </li>
-            <li className="p-2">
-              <Link to={"/"}>
-                <p>Awarded</p>
-              </Link>
-            </li>
-          </ul>
-        </div>
+        <ul className="flex items-center gap-4 bg-[silver] dark:bg-secondary-dark rounded p-1">
+          <NavLink
+            className="p-2 hover:text-black rounded hover:bg-sky-400"
+            to="/profile"
+            end
+          >
+            Profile
+          </NavLink>
+
+          <NavLink
+            className="p-2 hover:text-black rounded hover:bg-sky-400"
+            to={"/profile/challenges"}
+            end
+          >
+            Challenges
+          </NavLink>
+
+          <NavLink
+            className="p-2 hover:text-black rounded hover:bg-sky-400"
+            to={"/profile/achievements"}
+            end
+          >
+            Achievements
+          </NavLink>
+
+          <NavLink
+            className="p-2 hover:text-black rounded hover:bg-sky-400"
+            to={"/"}
+            end
+          >
+            Awards
+          </NavLink>
+        </ul>
+
+        <Outlet />
       </div>
     </div>
   );

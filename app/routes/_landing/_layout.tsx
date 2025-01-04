@@ -1,6 +1,5 @@
 import { json, LoaderFunctionArgs, TypedResponse } from "@remix-run/node";
 import { Link, Outlet, useLoaderData } from "@remix-run/react";
-import { useEffect } from "react";
 import Header from "~/components/Header/Header";
 import ThemeToggle from "~/components/Header/ThemeToggle";
 import { Battle, Challenge, Class, LeaderBoard } from "~/components/icons";

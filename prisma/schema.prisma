@@ -18,6 +18,12 @@ model User {
   username      String
   email         String         @unique
   profileImage  String?
+  note          String?
+  fbLink        String?
+  teleLink      String?
+  redditLink    String?
+  linkedInLink  String?
+  gitHubLink    String?
   role          UserRole       @default(USER)
   lastLoginIp   String?
   passwordHash  String
