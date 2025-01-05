@@ -35,8 +35,9 @@ a.active {
 }
 
 .error {
-	background: rgba(141, 25, 25, 0.877);
-	border: 2px solid red;
-	padding: 0.5rem;
-	border-radius: 0.1rem;
+	@apply bg-red-800/90 border-2 border-red-500 text-sm font-semibold p-2 rounded-md self-start my-2 text-white;
+}
+
+.success {
+	@apply bg-green-700/90 border-2 border-green-500 text-sm font-semibold p-2 rounded-md self-start my-2 text-white;
 }

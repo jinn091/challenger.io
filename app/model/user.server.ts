@@ -51,6 +51,38 @@ export async function getUserById(id: string): Promise<UserInfo | null> {
 	});
 }
 
+export async function isUsernameAlreadyExist(
+	userId: string,
+	username: string
+): Promise<boolean> {
+	const isUsernameExist = await db.user.findFirst({
+		where: {
+			id: {
+				not: userId
+			},
+			username
+		}
+	});
+
+	return isUsernameExist != null;
+}
+
+export async function isEmailAlreadyExist(
+	userId: string,
+	email: string
+): Promise<boolean> {
+	const isEmailExist = await db.user.findFirst({
+		where: {
+			id: {
+				not: userId
+			},
+			email
+		}
+	});
+
+	return isEmailExist != null;
+}
+
 export async function createUser({
 	username,
 	email,

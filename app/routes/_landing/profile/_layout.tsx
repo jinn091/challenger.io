@@ -18,7 +18,16 @@ export async function loader({
 }
 
 export default function ProfileLayout(): React.JSX.Element {
-	const { username, email, note } = useLoaderData<typeof loader>();
+	const {
+		username,
+		email,
+		note,
+		fbLink,
+		gitHubLink,
+		linkedInLink,
+		teleLink,
+		redditLink
+	} = useLoaderData<typeof loader>();
 
 	return (
 		<div className="m-8 flex gap-8 w-full">
@@ -105,14 +114,51 @@ export default function ProfileLayout(): React.JSX.Element {
 				<div>
 					<h2 className="text-xl font-bold">Social Medias</h2>
 					<div className="flex gap-2">
-						{Object.values(SocialMedias).map(sm => (
-							<img
-								className="w-[2rem] h-[2rem]"
-								src={`/images/social-icons/${sm}.webp`}
-								alt={sm}
-								key={sm}
-							/>
-						))}
+						{gitHubLink && (
+							<Link target="_blank" to={gitHubLink}>
+								<img
+									className="w-[2rem] h-[2rem]"
+									src={`/images/social-icons/github.webp`}
+									alt={"github"}
+								/>
+							</Link>
+						)}
+						{linkedInLink && (
+							<Link target="_blank" to={linkedInLink}>
+								<img
+									className="w-[2rem] h-[2rem]"
+									src={`/images/social-icons/linkedin.webp`}
+									alt={"linkedin"}
+								/>
+							</Link>
+						)}
+						{redditLink && (
+							<Link target="_blank" to={redditLink}>
+								<img
+									className="w-[2rem] h-[2rem]"
+									src={`/images/social-icons/reddit.webp`}
+									alt={"reddit"}
+								/>
+							</Link>
+						)}
+						{fbLink && (
+							<Link target="_blank" to={fbLink}>
+								<img
+									className="w-[2rem] h-[2rem]"
+									src={`/images/social-icons/facebook.webp`}
+									alt={"facebook"}
+								/>
+							</Link>
+						)}
+						{teleLink && (
+							<Link target="_blank" to={teleLink}>
+								<img
+									className="w-[2rem] h-[2rem]"
+									src={`/images/social-icons/telegram.webp`}
+									alt={"telegram"}
+								/>
+							</Link>
+						)}
 					</div>
 				</div>
 
