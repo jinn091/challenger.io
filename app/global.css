@@ -41,3 +41,13 @@ a.active {
 .success {
 	@apply bg-green-700/90 border-2 border-green-500 text-sm font-semibold p-2 rounded-md self-start my-2 text-white;
 }
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+input[type="number"] {
+	-moz-appearance: textfield;
+}

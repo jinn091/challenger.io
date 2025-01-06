@@ -91,11 +91,14 @@ This template comes with [Tailwind CSS](https://tailwindcss.com/) already config
 
     -   `feat`: Used when adding a new feature  
         Examples:
-        ```
+
+        ````
         feat: Add sales route
 
             feat: Update header colors
             ```
+
+        ````
 
     -   `refactor`: Used for code changes that do not affect what the user sees (formatting, code structure changes, style changes etc.)  
         Examples:
@@ -106,19 +109,24 @@ This template comes with [Tailwind CSS](https://tailwindcss.com/) already config
 
     -   `fix`: Bug fixes  
         Examples:
-        ```
+
+        ````
         fix: Change language route causes 500
 
             fix: `FadeInImage` not fading in when the image loads faster than JavaScript
             ```
 
+        ````
+
     -   `chore`: Project structure and dependency management (package upgrades)  
         Examples:
-        ```
+
+        ````
         chore: Update packages
 
             chore: Update README
             ```
+        ````
 
     `<commit message>` **must** be in the imperative voice/present tense, in other words, it must be grammatically correct when it is filled in the blanks of "this commit will **\_**"
 

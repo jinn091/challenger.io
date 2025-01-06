@@ -1,73 +1,73 @@
 export const WebHackingMethods = {
 	XSS: "Cross-Site Scripting (Injecting malicious scripts into web pages)",
-	SQL_Injection:
+	SQL_INJECTION:
 		"SQL Injection (Exploiting vulnerabilities in database queries)",
 	CSRF: "Cross-Site Request Forgery (Exploiting trusted sessions for unauthorized actions)",
 	SSRF: "Server-Side Request Forgery (Forcing a server to make unintended requests)",
-	Directory_Traversal:
+	DIRECTORY_TRAVERSAL:
 		"Accessing restricted directories and files on the web server",
-	Authentication_Bypass:
+	AUTHENTICATION_BYPASS:
 		"Circumventing authentication mechanisms on web applications",
-	Session_Hijacking:
+	SESSION_HIJACKING:
 		"Taking over active user sessions to gain unauthorized access",
-	Subdomain_Enumeration:
+	SUBDOMAIN_ENUMERATION:
 		"Identifying vulnerabilities in subdomains of a website",
-	API_Security: "Testing for vulnerabilities in web application APIs",
-	Open_Redirect:
+	API_SECURITY: "Testing for vulnerabilities in web application APIs",
+	OPEN_REDIRECT:
 		"Redirecting users to malicious sites via open redirect vulnerabilities",
-	Clickjacking:
+	CLICKJACKING:
 		"Tricking users into clicking on hidden elements within a web page",
-	File_Upload_Vulnerability:
+	FILE_UPLOAD_VULNERABILITY:
 		"Exploiting poorly secured file upload functionalities",
-	Content_Security_Policy_Bypass:
+	CONTENT_SECURITY_POLICY_BYPASS:
 		"Bypassing CSP to execute unauthorized actions",
-	Broken_Access_Control:
+	BROKEN_ACCESS_CONTROL:
 		"Exploiting flaws in access control to gain unauthorized privileges",
-	Insecure_Deserialization:
+	INSECURE_DESERIALIZATION:
 		"Exploiting deserialization processes to execute malicious actions",
-	Broken_Authentication:
+	BROKEN_AUTHENTICATION:
 		"Exploiting authentication flaws to impersonate users",
-	Sensitive_Data_Exposure: "Discovering and exploiting sensitive data leaks",
-	Weak_Session_Management:
+	SENSITIVE_DATA_EXPOSURE: "Discovering and exploiting sensitive data leaks",
+	WEAK_SESSION_MANAGEMENT:
 		"Exploiting session-related weaknesses (e.g., session fixation)",
-	Path_Parameter_Attacks:
+	PATH_PARAMETER_ATTACKS:
 		"Manipulating path parameters to access unauthorized resources",
-	HTTP_Request_Smuggling:
+	HTTP_REQUEST_SMUGGLING:
 		"Manipulating HTTP requests to exploit web servers and proxies",
-	Business_Logic_Bugs:
+	BUSINESS_LOGIC_BUGS:
 		"Exploiting flaws in the logical flow of web applications",
-	Host_Header_Injection:
+	HOST_HEADER_INJECTION:
 		"Manipulating HTTP headers to exploit trust relationships",
-	HTTP_Response_Splitting:
+	HTTP_RESPONSE_SPLITTING:
 		"Injecting data into HTTP responses to create malicious outputs",
-	Cache_Poisoning:
+	CACHE_POISONING:
 		"Manipulating server caches to deliver malicious content to users",
-	DOM_Based_XSS:
+	DOM_BASED_XSS:
 		"Exploiting client-side JavaScript to manipulate the DOM for malicious purposes",
-	CORS_Misconfiguration:
+	CORS_MISCONFIGURATION:
 		"Exploiting Cross-Origin Resource Sharing to access restricted data",
 	IDOR: "Insecure Direct Object References (Accessing unauthorized objects directly)",
-	HTML_Injection: "Injecting malicious HTML into web pages",
-	XML_External_Entity:
+	HTML_INJECTION: "Injecting malicious HTML into web pages",
+	XML_EXTERNAL_ENTITY:
 		"Exploiting vulnerable XML parsers to access restricted resources",
-	Hidden_Parameter_Discovery:
+	HIDDEN_PARAMETER_DISCOVERY:
 		"Identifying and exploiting hidden parameters in web requests",
-	Input_Validation_Bugs:
+	INPUT_VALIDATION_BUGS:
 		"Exploiting insufficient input validation in forms or APIs",
-	Cross_Origin_Scripting: "Exploiting insecure interactions between origins",
-	Template_Injection: "Injecting malicious code into server-side templates",
-	Misconfigured_Security_Headers:
+	CROSS_ORIGIN_SCRIPTING: "Exploiting insecure interactions between origins",
+	TEMPLATE_INJECTION: "Injecting malicious code into server-side templates",
+	MISCONFIGURED_SECURITY_HEADERS:
 		"Exploiting missing or misconfigured HTTP security headers",
-	Rate_Limiting_Bypass:
+	RATE_LIMITING_BYPASS:
 		"Circumventing rate-limiting protections for brute force or scraping",
-	Password_Reset_Poisoning:
+	PASSWORD_RESET_POISONING:
 		"Manipulating password reset flows to compromise accounts",
-	Websocket_Security: "Testing for vulnerabilities in WebSocket connections",
-	Weak_Encryption:
+	WEBSOCKET_SECURITY: "Testing for vulnerabilities in WebSocket connections",
+	WEAK_ENCRYPTION:
 		"Exploiting insecure cryptographic implementations on websites",
-	Dependency_Vulnerabilities:
+	DEPENDENCY_VULNERABILITIES:
 		"Identifying outdated or vulnerable third-party libraries in use",
-	JavaScript_Prototype_Pollution:
+	JAVASCRIPT_PROTOTYPE_POLLUTION:
 		"Manipulating JavaScript objects to exploit server-side logic"
 };
 
