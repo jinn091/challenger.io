@@ -2,7 +2,7 @@ import { LinksFunction } from "@remix-run/node";
 import { WebHackingMethods } from "~/utils/constant";
 import indexLinks from "./index.css?url";
 import { Form } from "@remix-run/react";
-import { formatHackingMethod } from "~/utils/challenge";
+import { formatHackingMethod } from "~/utils/format";
 
 export const links: LinksFunction = () => [
 	{ rel: "stylesheet", href: indexLinks }
@@ -28,7 +28,9 @@ export default function GetIndex() {
 										key={wb}
 										className="bg-purple-900 text-white font-semibold text-xs rounded p-[.5] px-[.5rem]"
 									>
-										{formatHackingMethod(wb)}
+										{formatHackingMethod(
+											wb as WebHackingMethods
+										)}
 									</small>
 								) : null
 							)}
@@ -57,7 +59,9 @@ export default function GetIndex() {
 										key={wb}
 										className="bg-purple-900 text-white font-semibold text-xs rounded p-[.5] px-[.5rem]"
 									>
-										{formatHackingMethod(wb)}
+										{formatHackingMethod(
+											wb as WebHackingMethods
+										)}
 									</small>
 								) : null
 							)}
@@ -86,7 +90,9 @@ export default function GetIndex() {
 										key={wb}
 										className="bg-purple-900 text-white font-semibold text-xs rounded p-[.5] px-[.5rem]"
 									>
-										{formatHackingMethod(wb)}
+										{formatHackingMethod(
+											wb as WebHackingMethods
+										)}
 									</small>
 								) : null
 							)}

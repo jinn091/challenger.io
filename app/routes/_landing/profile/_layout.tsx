@@ -1,13 +1,8 @@
-import {
-	json,
-	LinksFunction,
-	LoaderFunctionArgs,
-	TypedResponse
-} from "@remix-run/node";
+import { json, LoaderFunctionArgs, TypedResponse } from "@remix-run/node";
 import { Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
 import { authenticate } from "~/model/auth.server";
 import { getUserById, UserInfo } from "~/model/user.server";
-import { SocialMedias, WebHackingMethods } from "~/utils/constant";
+import { WebHackingMethods } from "~/utils/constant";
 
 export async function loader({
 	request
@@ -115,7 +110,11 @@ export default function ProfileLayout(): React.JSX.Element {
 					<h2 className="text-xl font-bold">Social Medias</h2>
 					<div className="flex gap-2">
 						{gitHubLink && (
-							<Link target="_blank" to={gitHubLink}>
+							<Link
+								target="_blank"
+								rel="noreferrer"
+								to={gitHubLink}
+							>
 								<img
 									className="w-[2rem] h-[2rem]"
 									src={`/images/social-icons/github.webp`}
@@ -124,7 +123,11 @@ export default function ProfileLayout(): React.JSX.Element {
 							</Link>
 						)}
 						{linkedInLink && (
-							<Link target="_blank" to={linkedInLink}>
+							<Link
+								target="_blank"
+								rel="noreferrer"
+								to={linkedInLink}
+							>
 								<img
 									className="w-[2rem] h-[2rem]"
 									src={`/images/social-icons/linkedin.webp`}
@@ -133,7 +136,11 @@ export default function ProfileLayout(): React.JSX.Element {
 							</Link>
 						)}
 						{redditLink && (
-							<Link target="_blank" to={redditLink}>
+							<Link
+								target="_blank"
+								rel="noreferrer"
+								to={redditLink}
+							>
 								<img
 									className="w-[2rem] h-[2rem]"
 									src={`/images/social-icons/reddit.webp`}
@@ -142,7 +149,7 @@ export default function ProfileLayout(): React.JSX.Element {
 							</Link>
 						)}
 						{fbLink && (
-							<Link target="_blank" to={fbLink}>
+							<Link target="_blank" rel="noreferrer" to={fbLink}>
 								<img
 									className="w-[2rem] h-[2rem]"
 									src={`/images/social-icons/facebook.webp`}
@@ -151,7 +158,11 @@ export default function ProfileLayout(): React.JSX.Element {
 							</Link>
 						)}
 						{teleLink && (
-							<Link target="_blank" to={teleLink}>
+							<Link
+								target="_blank"
+								rel="noreferrer"
+								to={teleLink}
+							>
 								<img
 									className="w-[2rem] h-[2rem]"
 									src={`/images/social-icons/telegram.webp`}

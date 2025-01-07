@@ -34,6 +34,7 @@ export const { getSession, commitSession, destroySession } =
 			return sessionToken;
 		},
 		readData: async sessionToken => await getSessionToken(sessionToken),
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		updateData: async (_sessionToken, _data, _expiresAt) => {},
 		deleteData: async sessionToken => {
 			await deleteSessionToken(sessionToken);

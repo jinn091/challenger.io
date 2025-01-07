@@ -9,7 +9,7 @@
 		"lint": "eslint --ignore-path .gitignore --cache --cache  ./node_modules/.cache/eslint .",
 		"start": "remix-serve ./build/server/index.js",
 		"format": "prettier . --write",
-		"check": "tsc --skipLibCheck && prettier . -c"
+		"check": "tsc --skipLibCheck && prettier . -c && eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint ."
 	},
 	"dependencies": {
 		"@prisma/client": "5.20.0",
@@ -28,6 +28,7 @@
 	},
 	"devDependencies": {
 		"@remix-run/dev": "^2.12.1",
+		"@remix-run/eslint-config": "^2.15.2",
 		"@types/bcrypt": "^5.0.2",
 		"@types/crypto-js": "^4.2.2",
 		"@types/jsonwebtoken": "^9.0.7",

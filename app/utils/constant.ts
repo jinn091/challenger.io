@@ -71,6 +71,8 @@ export const WebHackingMethods = {
 		"Manipulating JavaScript objects to exploit server-side logic"
 };
 
+export type WebHackingMethods = keyof typeof WebHackingMethods;
+
 export const SocialMedias = {
 	Facebook: "facebook",
 	Telegram: "telegram",

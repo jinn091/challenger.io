@@ -1,27 +1,146 @@
-import { Form, useRouteLoaderData } from "@remix-run/react";
+import { Form, useActionData, useRouteLoaderData } from "@remix-run/react";
 import React, { useState } from "react";
 import { loader as profileRootLoader } from "../_layout";
 import { WebHackingMethods } from "~/utils/constant";
-import { formatHackingMethod } from "~/utils/challenge";
+import { formatHackingMethod } from "~/utils/format";
+import { ActionFunctionArgs, json, TypedResponse } from "@remix-run/node";
+import { authenticate } from "~/model/auth.server";
+import { getUserById } from "~/model/user.server";
+import { z } from "zod";
+import { Result } from "~/utils/result.server";
+import { FormError } from "~/utils/error.server";
+import { createChallenge } from "~/model/challenge.server";
+import { ChallengeStatus } from "@prisma/client";
+
+type CreateChallengeSchema = z.infer<typeof CreateChallenge>;
+
+const CreateChallenge = z.object({
+	name: z
+		.string()
+		.regex(
+			/^[a-zA-Z0-9_,.! ]+$/,
+			"Name must not contain special characters"
+		),
+	target: z
+		.string()
+		.url("Target must be a valid URL.")
+		.refine(url => {
+			try {
+				const parsedUrl = new URL(url);
+				return !parsedUrl.search && !parsedUrl.hash;
+			} catch (e) {
+				return false;
+			}
+		}, "Target URL must not include query parameters, fragments, or scripts."),
+	prize: z.number().min(0).max(1000000, "Prize must be less than 1,000,000."),
+	note: z
+		.string()
+		.max(300, "Note must be less than 300 words.")
+		.regex(
+			/^[a-zA-Z0-9_,.! ]+$/,
+			"Note must not contain special characters"
+		),
+	selectedMethods: z
+		.array(
+			z.enum(
+				Object.keys(WebHackingMethods) as [
+					keyof typeof WebHackingMethods
+				]
+			)
+		)
+		.nonempty("At least one hacking method must be selected")
+});
+
+export async function action({
+	request
+}: ActionFunctionArgs): Promise<
+	TypedResponse<Result<null, FormError<CreateChallengeSchema, string>>>
+> {
+	const user = await authenticate(request, userId => getUserById(userId));
+
+	const fields = Object.fromEntries(await request.formData());
+
+	// Parse selectedMethods from the form
+	const selectedMethods = JSON.parse(
+		(fields.selectedMethods as string) || "[]"
+	);
+
+	console.log(selectedMethods);
+
+	// Convert prize from string to number
+	const parsedFields = {
+		...fields,
+		prize: parseFloat(fields.prize as string), // Convert to number
+		selectedMethods
+	};
+
+	// const parseResult
+	const parseResult = CreateChallenge.safeParse(parsedFields);
+	if (!parseResult.success) {
+		console.log("Here Buddy!");
+		console.log(parseResult.error);
+		return json({
+			ok: false,
+			error: {
+				fields,
+				errors: parseResult.error.format(),
+				message: ""
+			}
+		});
+	}
+
+	const { name, target, prize, note } = parseResult.data;
+	const createChallengeResult = await createChallenge({
+		creatorId: user.id,
+		name,
+		targetLink: target,
+		prize,
+		methods: parseResult.data.selectedMethods,
+		note,
+		status: ChallengeStatus.ON_GOING
+	});
+
+	if (!createChallengeResult.ok) {
+		return json({
+			ok: false,
+			error: {
+				fields,
+				message:
+					"Something went wrong while creating challenge. Try again later :)"
+			}
+		});
+	}
+
+	return json({
+		ok: true,
+		data: null
+	});
+}
 
 export default function ProfileRoute(): React.JSX.Element {
 	const data = useRouteLoaderData<typeof profileRootLoader>(
 		"routes/_landing/profile/_layout"
 	);
+	const actionData = useActionData<typeof action>();
+	const fields = !actionData?.ok ? actionData?.error.fields : null;
+	const fieldErrors = !actionData?.ok ? actionData?.error.errors : null;
+	const errorMessage = !actionData?.ok ? actionData?.error.message : null;
 	const [noteCount, setNoteCount] = useState<number>(data?.note?.length ?? 0);
-	const [selectedMethods, setSelectedMethods] = useState<string[]>([]);
-	const [availableMethods, setAvailableMethods] = useState(
-		Object.keys(WebHackingMethods)
+	const [selectedMethods, setSelectedMethods] = useState<WebHackingMethods[]>(
+		[]
 	);
+	const [availableMethods, setAvailableMethods] = useState<
+		(keyof typeof WebHackingMethods)[]
+	>(Object.keys(WebHackingMethods) as (keyof typeof WebHackingMethods)[]);
 
 	// Handle method click: Add to selected
-	const handleMethodClick = (method: string) => {
+	const handleMethodClick = (method: WebHackingMethods) => {
 		setAvailableMethods(prev => prev.filter(item => item !== method));
 		setSelectedMethods(prev => [...prev, method]);
 	};
 
 	// Handle selected method click: Remove from selected
-	const handleRemoveMethod = (method: string) => {
+	const handleRemoveMethod = (method: WebHackingMethods) => {
 		setSelectedMethods(prev => prev.filter(item => item !== method));
 		setAvailableMethods(prev => [...prev, method]);
 	};
@@ -42,11 +161,16 @@ export default function ProfileRoute(): React.JSX.Element {
 								type="text"
 								name="name"
 								className="w-full outline-none bg-[#cfcece] dark:bg-secondary-dark dark:text-white"
-								defaultValue={""}
+								defaultValue={fields?.name ?? ""}
 								placeholder="Name"
 								required
 							/>
 						</div>
+						{fieldErrors?.name?._errors[0] && (
+							<p className="error">
+								{fieldErrors.name._errors[0]}
+							</p>
+						)}
 					</div>
 
 					<div className="flex flex-col dark:text-white">
@@ -62,11 +186,16 @@ export default function ProfileRoute(): React.JSX.Element {
 								type="text"
 								name="target"
 								className="w-full outline-none bg-[#cfcece] dark:bg-secondary-dark dark:text-white"
-								defaultValue={""}
+								defaultValue={fields?.target ?? ""}
 								placeholder="Target Link"
 								required
 							/>
 						</div>
+						{fieldErrors?.target?._errors[0] && (
+							<p className="error">
+								{fieldErrors.target._errors[0]}
+							</p>
+						)}
 					</div>
 
 					<div className="flex flex-col dark:text-white">
@@ -82,7 +211,7 @@ export default function ProfileRoute(): React.JSX.Element {
 								type="number"
 								name="prize"
 								className="w-full outline-none bg-[#cfcece] dark:bg-secondary-dark dark:text-white"
-								defaultValue={""}
+								defaultValue={fields?.prize ?? ""}
 								placeholder="Prize"
 								required
 								min={0}
@@ -90,6 +219,11 @@ export default function ProfileRoute(): React.JSX.Element {
 							<strong className="mx-2 text-[#706525]">MMK</strong>
 						</div>
 						<small>0 - 1,000,000 MMK</small>
+						{fieldErrors?.prize?._errors[0] && (
+							<p className="error">
+								{fieldErrors.prize._errors[0]}
+							</p>
+						)}
 					</div>
 
 					<div className="flex flex-col dark:text-white">
@@ -107,29 +241,19 @@ export default function ProfileRoute(): React.JSX.Element {
 								onChange={e =>
 									setNoteCount(e.currentTarget.value.length)
 								}
-								defaultValue={data?.note ?? ""}
+								defaultValue={fields?.note ?? ""}
 								placeholder="Note"
 							/>
 						</div>
 						<small className="text-gray-500">{noteCount}/300</small>
+						{fieldErrors?.note?._errors[0] && (
+							<p className="error">
+								{fieldErrors.note._errors[0]}
+							</p>
+						)}
 					</div>
 				</div>
 				<div className="flex flex-col gap-4">
-					{/* Available Methods */}
-					<h3>Available Methods</h3>
-					<div className=" bg-[#cfcece] dark:bg-secondary-dark min-w-[350px] rounded p-4 max-h-[200px] overflow-auto">
-						<ul className="flex gap-2 flex-wrap">
-							{availableMethods.map(method => (
-								<li
-									key={method}
-									onClick={() => handleMethodClick(method)}
-									className="text-[11px] font-bold border border-gray-600 p-2 rounded cursor-pointer"
-								>
-									{formatHackingMethod(method)}
-								</li>
-							))}
-						</ul>
-					</div>
 					{/* Selected Methods */}
 					<h3>Selected Methods</h3>
 					<div className=" bg-[#cfcece] dark:bg-secondary-dark min-w-[350px] rounded p-4 max-h-[200px] overflow-auto">
@@ -147,12 +271,45 @@ export default function ProfileRoute(): React.JSX.Element {
 									</li>
 								))
 							) : (
-								<p>Please select hacking methods.</p>
+								<p className="text-gray-500">
+									Please select hacking methods.
+								</p>
 							)}
 						</ul>
 					</div>{" "}
+					{/* Available Methods */}
+					<h3>Available Methods</h3>
+					<div className=" bg-[#cfcece] dark:bg-secondary-dark min-w-[350px] rounded p-4 max-h-[200px] overflow-auto">
+						<ul className="flex gap-2 flex-wrap">
+							{availableMethods.map(method => (
+								<li
+									key={method}
+									onClick={() => handleMethodClick(method)}
+									className="text-[11px] font-bold border border-gray-600 p-2 rounded cursor-pointer"
+								>
+									{formatHackingMethod(method)}
+								</li>
+							))}
+						</ul>
+					</div>
+					{fieldErrors?.selectedMethods &&
+						fieldErrors?.selectedMethods[0]?._errors[0] && (
+							<p className="error">
+								{fieldErrors.selectedMethods[0]?._errors[0]}
+							</p>
+						)}
 				</div>
 			</div>
+
+			<input
+				type="hidden"
+				name="selectedMethods"
+				value={JSON.stringify(selectedMethods)}
+			/>
+			{errorMessage && <p className="error">{errorMessage}</p>}
+			{actionData?.ok && (
+				<p className="success">The challenge has been created!</p>
+			)}
 
 			<button className="bg-green-500 dark:bg-blue-900 p-2 rounded self-start">
 				<span>Create Challenge</span>

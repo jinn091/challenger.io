@@ -1,3 +1,10 @@
+/**
+ *
+ * All the functions in this file work in server-only (https://remix.run/docs/en/main/file-conventions/-server)
+ *
+ * This file is only for Authentication
+ */
+
 import {
 	commitSession,
 	destroySession,

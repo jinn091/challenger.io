@@ -1,8 +1,14 @@
+/**
+ *
+ * All the functions in this file work in server-only (https://remix.run/docs/en/main/file-conventions/-server)
+ *
+ * This file is only for User models
+ */
+
 import type { User } from "@prisma/client";
 import { db } from "~/utils/db.server";
 import bcrypt from "bcrypt";
 import { getSession } from "~/utils/session.server";
-import { Result } from "~/utils/type.server";
 
 export type UserInfo = Pick<
 	User,

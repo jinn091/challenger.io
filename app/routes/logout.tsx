@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, json, TypedResponse } from "@remix-run/node";
+import { ActionFunctionArgs, TypedResponse } from "@remix-run/node";
 import { logout } from "~/model/auth.server";
 
 export async function action({

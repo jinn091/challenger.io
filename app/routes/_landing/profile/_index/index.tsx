@@ -1,5 +1,5 @@
 import { Form, useActionData, useRouteLoaderData } from "@remix-run/react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { loader as profileRootLoader } from "../_layout";
 import { Profile, Username } from "~/components/icons";
 import { ActionFunctionArgs, json, TypedResponse } from "@remix-run/node";

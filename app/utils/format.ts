@@ -1,4 +1,11 @@
-export function formatHackingMethod(text: string): string {
+import { WebHackingMethods } from "./constant";
+
+/**
+ * This function format the WebHackingMethods to proper string.
+ * @param SQL_INJECTION
+ * @returns```Sql Injection```
+ */
+export function formatHackingMethod(text: WebHackingMethods): string {
 	// Replace underscores with spaces and split the text into words
 	const formattedText = text
 		.replaceAll("_", " ")
