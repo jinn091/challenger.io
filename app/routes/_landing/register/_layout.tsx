@@ -7,29 +7,55 @@ import type { FormError } from "~/utils/error.server";
 import { register } from "~/model/auth.server";
 import { HideIcon, Key, Profile, Username } from "~/components/icons";
 import ShowIcon from "~/components/icons/ShowIcon";
+import {
+	isEmailAlreadyExistForRegister,
+	isUsernameAlreadyExistForRegister
+} from "~/model/user.server";
 
-type LoginForm = z.infer<typeof LoginSchema>;
+type RegisterForm = z.infer<typeof RegisterSchema>;
 
-const LoginSchema = z.object({
+const RegisterSchema = z.object({
 	email: z.string().trim().email("Email is not valid"),
 	password: z.string().min(8, "Password is too short"),
 	username: z
 		.string()
 		.min(4, "Username is too short")
 		.max(10, "Username is too long")
+		.regex(
+			/^[a-zA-Z0-9_]+$/,
+			"Username must not contain special characters."
+		)
 });
 
 export async function action({
 	request
-}: ActionFunctionArgs): Promise<TypedResponse<FormError<LoginForm, string>>> {
+}: ActionFunctionArgs): Promise<
+	TypedResponse<FormError<RegisterForm, string>>
+> {
 	const fields = Object.fromEntries(await request.formData());
 
-	const parseResult = LoginSchema.safeParse(fields);
+	const parseResult = RegisterSchema.safeParse(fields);
 	if (!parseResult.success) {
 		return json({
 			fields,
 			errors: parseResult.error.format(),
 			message: ""
+		});
+	}
+
+	// Check whether username is alraedy exist or not
+	if (await isUsernameAlreadyExistForRegister(parseResult.data.username)) {
+		return json({
+			fields,
+			message: "Username already exist."
+		});
+	}
+
+	// Check whether email is already exist or not
+	if (await isEmailAlreadyExistForRegister(parseResult.data.email)) {
+		return json({
+			fields,
+			message: "Email already exist."
 		});
 	}
 
@@ -86,7 +112,7 @@ export default function LoginRoute() {
 							/>
 						</div>
 					</div>
-					{fieldErrors?.email?._errors[0] && (
+					{fieldErrors?.username?._errors[0] && (
 						<p className="error">
 							{fieldErrors.username?._errors[0]}
 						</p>

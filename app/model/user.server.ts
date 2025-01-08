@@ -57,6 +57,40 @@ export async function getUserById(id: string): Promise<UserInfo | null> {
 	});
 }
 
+/**
+ * This function is to check whether username is already existed or not
+ * @param username
+ * @returns ```boolean```
+ */
+export async function isUsernameAlreadyExistForRegister(
+	username: string
+): Promise<boolean> {
+	const isUsernameExist = await db.user.findFirst({
+		where: {
+			username
+		}
+	});
+
+	return isUsernameExist != null;
+}
+
+/**
+ * This function is to check whether email is already existed or not
+ * @param email
+ * @returns ```boolean```
+ */
+export async function isEmailAlreadyExistForRegister(
+	email: string
+): Promise<boolean> {
+	const isUsernameExist = await db.user.findFirst({
+		where: {
+			email
+		}
+	});
+
+	return isUsernameExist != null;
+}
+
 export async function isUsernameAlreadyExist(
 	userId: string,
 	username: string

@@ -10,6 +10,9 @@ import { WebHackingMethods } from "~/utils/constant";
 import { db } from "~/utils/db.server";
 import { Result } from "~/utils/type.server";
 
+/**
+ * Use to create challenge
+ */
 export async function createChallenge({
 	creatorId,
 	name,
@@ -50,4 +53,18 @@ export async function createChallenge({
 			error: null
 		};
 	}
+}
+
+/**
+ * Get latest challenges
+ */
+export async function getChallenges({ status }: { status?: ChallengeStatus }) {
+	return await db.challenge.findMany({
+		where: {
+			status: status ?? ChallengeStatus.ON_GOING
+		},
+		orderBy: {
+			createdAt: "desc"
+		}
+	});
 }

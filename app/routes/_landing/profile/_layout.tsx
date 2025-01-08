@@ -106,73 +106,82 @@ export default function ProfileLayout(): React.JSX.Element {
 					<small>#78758739</small>
 				</div>
 
-				<div>
-					<h2 className="text-xl font-bold">Social Medias</h2>
-					<div className="flex gap-2">
-						{gitHubLink && (
-							<Link
-								target="_blank"
-								rel="noreferrer"
-								to={gitHubLink}
-							>
-								<img
-									className="w-[2rem] h-[2rem]"
-									src={`/images/social-icons/github.webp`}
-									alt={"github"}
-								/>
-							</Link>
-						)}
-						{linkedInLink && (
-							<Link
-								target="_blank"
-								rel="noreferrer"
-								to={linkedInLink}
-							>
-								<img
-									className="w-[2rem] h-[2rem]"
-									src={`/images/social-icons/linkedin.webp`}
-									alt={"linkedin"}
-								/>
-							</Link>
-						)}
-						{redditLink && (
-							<Link
-								target="_blank"
-								rel="noreferrer"
-								to={redditLink}
-							>
-								<img
-									className="w-[2rem] h-[2rem]"
-									src={`/images/social-icons/reddit.webp`}
-									alt={"reddit"}
-								/>
-							</Link>
-						)}
-						{fbLink && (
-							<Link target="_blank" rel="noreferrer" to={fbLink}>
-								<img
-									className="w-[2rem] h-[2rem]"
-									src={`/images/social-icons/facebook.webp`}
-									alt={"facebook"}
-								/>
-							</Link>
-						)}
-						{teleLink && (
-							<Link
-								target="_blank"
-								rel="noreferrer"
-								to={teleLink}
-							>
-								<img
-									className="w-[2rem] h-[2rem]"
-									src={`/images/social-icons/telegram.webp`}
-									alt={"telegram"}
-								/>
-							</Link>
-						)}
+				{(gitHubLink ||
+					fbLink ||
+					linkedInLink ||
+					redditLink ||
+					teleLink) && (
+					<div>
+						<h2 className="text-xl font-bold">Social Medias</h2>
+						<div className="flex gap-2">
+							{gitHubLink && (
+								<Link
+									target="_blank"
+									rel="noreferrer"
+									to={gitHubLink}
+								>
+									<img
+										className="w-[2rem] h-[2rem]"
+										src={`/images/social-icons/github.webp`}
+										alt={"github"}
+									/>
+								</Link>
+							)}
+							{linkedInLink && (
+								<Link
+									target="_blank"
+									rel="noreferrer"
+									to={linkedInLink}
+								>
+									<img
+										className="w-[2rem] h-[2rem]"
+										src={`/images/social-icons/linkedin.webp`}
+										alt={"linkedin"}
+									/>
+								</Link>
+							)}
+							{redditLink && (
+								<Link
+									target="_blank"
+									rel="noreferrer"
+									to={redditLink}
+								>
+									<img
+										className="w-[2rem] h-[2rem]"
+										src={`/images/social-icons/reddit.webp`}
+										alt={"reddit"}
+									/>
+								</Link>
+							)}
+							{fbLink && (
+								<Link
+									target="_blank"
+									rel="noreferrer"
+									to={fbLink}
+								>
+									<img
+										className="w-[2rem] h-[2rem]"
+										src={`/images/social-icons/facebook.webp`}
+										alt={"facebook"}
+									/>
+								</Link>
+							)}
+							{teleLink && (
+								<Link
+									target="_blank"
+									rel="noreferrer"
+									to={teleLink}
+								>
+									<img
+										className="w-[2rem] h-[2rem]"
+										src={`/images/social-icons/telegram.webp`}
+										alt={"telegram"}
+									/>
+								</Link>
+							)}
+						</div>
 					</div>
-				</div>
-
+				)}
 				<ul className="flex items-center gap-4 bg-[silver] dark:bg-secondary-dark rounded p-1">
 					<NavLink
 						className="p-2 hover:text-black rounded hover:bg-sky-400"

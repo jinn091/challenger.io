@@ -1,3 +1,4 @@
+import { ChallengeStatus } from "@prisma/client";
 import { WebHackingMethods } from "./constant";
 
 /**
@@ -22,6 +23,22 @@ export function formatHackingMethod(text: WebHackingMethods): string {
 			match => match.toUpperCase()
 		);
 	}
+
+	return formattedText;
+}
+
+/**
+ * ```formatChallengeStatusToString``` function is use to convert challenge status into string
+ * @param text
+ * @returns ```string```
+ * 
+ * @example ON_GOING -> On Going
+ */
+export function formatChallengeStatusToString(status: ChallengeStatus): string {
+	const formattedText = status
+		.replaceAll("_", " ")
+		.toLowerCase() // Convert all to lowercase initially
+		.replace(/\b\w/g, char => char.toUpperCase()); // Capitalize the first letter of each word
 
 	return formattedText;
 }
