@@ -211,9 +211,9 @@ export default function ProfileRoute(): React.JSX.Element {
 								rows={5}
 								style={{ lineHeight: "1.25rem" }}
 								maxLength={100}
-								onChange={e =>
-									setNoteCount(e.currentTarget.value.length)
-								}
+								onChange={e => {
+									setNoteCount(e.currentTarget.value.length);
+								}}
 								defaultValue={data?.note ?? ""}
 								placeholder="Note"
 							/>

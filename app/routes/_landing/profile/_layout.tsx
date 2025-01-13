@@ -194,17 +194,8 @@ export default function ProfileLayout(): React.JSX.Element {
 					<NavLink
 						className="p-2 hover:text-black rounded hover:bg-sky-400"
 						to={"/profile/challenges"}
-						end
 					>
 						Challenges
-					</NavLink>
-
-					<NavLink
-						className="p-2 hover:text-black rounded hover:bg-sky-400"
-						to={"/profile/achievements"}
-						end
-					>
-						Achievements
 					</NavLink>
 
 					<NavLink
@@ -213,6 +204,14 @@ export default function ProfileLayout(): React.JSX.Element {
 						end
 					>
 						Awards
+					</NavLink>
+
+					<NavLink
+						className="p-2 hover:text-black rounded hover:bg-sky-400"
+						to={"/profile/achievements"}
+						end
+					>
+						Achievements
 					</NavLink>
 				</ul>
 

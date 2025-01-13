@@ -80,3 +80,5 @@ export const SocialMedias = {
 	LinkedIn: "linkedin",
 	Github: "github"
 };
+
+export const DRAG_SQUARE_HALF_SIZE = 10;

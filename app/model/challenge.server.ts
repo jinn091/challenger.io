@@ -5,7 +5,11 @@
  * This file is only for Challenge models
  */
 
-import { ChallengeStatus } from "@prisma/client";
+import {
+	Challenge,
+	ChallengeStatus,
+	ChallengeSubmission
+} from "@prisma/client";
 import { WebHackingMethods } from "~/utils/constant";
 import { db } from "~/utils/db.server";
 import { Result } from "~/utils/type.server";
@@ -58,13 +62,112 @@ export async function createChallenge({
 /**
  * Get latest challenges
  */
-export async function getChallenges({ status }: { status?: ChallengeStatus }) {
+export async function getChallenges({
+	status,
+	tab
+}: {
+	status?: ChallengeStatus;
+	tab: number;
+}) {
 	return await db.challenge.findMany({
 		where: {
 			status: status ?? ChallengeStatus.ON_GOING
 		},
+		skip: tab * 8,
+		take: 8,
 		orderBy: {
 			createdAt: "desc"
+		}
+	});
+}
+
+/**
+ * Get total challenge count
+ */
+export async function getTotalChallengeCount(): Promise<number> {
+	return await db.challenge.count({
+		where: {
+			status: ChallengeStatus.ON_GOING
+		}
+	});
+}
+
+/**
+ * Get only challenge by id
+ * @param challengeId
+ */
+export async function getChallengeById(challengeId: number): Promise<
+	| (Challenge & {
+			creator: { username: string };
+			winner: { username: string } | null;
+	  })
+	| null
+> {
+	return await db.challenge.findUnique({
+		where: {
+			id: challengeId
+		},
+		select: {
+			id: true,
+			creatorId: true,
+			winnerId: true,
+			name: true,
+			targetLink: true,
+			prize: true,
+			methods: true,
+			status: true,
+			note: true,
+			createdAt: true,
+			updatedAt: true,
+			creator: {
+				select: {
+					username: true
+				}
+			},
+			winner: {
+				select: {
+					username: true
+				}
+			}
+		}
+	});
+}
+
+/**
+ * ```getChallengeByUserId``` function is to fetch the challenges using userId
+ */
+export async function getChallengesByUserId(
+	userId: string
+): Promise<(Challenge & { submissions: ChallengeSubmission[] })[]> {
+	return await db.challenge.findMany({
+		where: {
+			creatorId: userId
+		},
+		include: {
+			submissions: true
+		},
+		orderBy: {
+			createdAt: "desc"
+		}
+	});
+}
+
+/**
+ * This function is use to update challenge winner
+ */
+export async function updateChallengeWinnerById({
+	id,
+	winnerId
+}: {
+	id: number;
+	winnerId: string;
+}): Promise<Challenge> {
+	return await db.challenge.update({
+		where: {
+			id
+		},
+		data: {
+			winnerId
 		}
 	});
 }

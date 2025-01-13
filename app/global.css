@@ -51,3 +51,42 @@ input[type="number"]::-webkit-outer-spin-button {
 input[type="number"] {
 	-moz-appearance: textfield;
 }
+
+table {
+	@apply w-full;
+}
+
+th,
+td {
+	@apply p-[0.75rem] text-left text-sm;
+}
+
+th {
+	@apply bg-[#b1b1b1] dark:bg-[#333] text-gray-800 dark:text-white border-none;
+}
+
+tr:nth-child(even) {
+	@apply dark:bg-[#2c2c2a];
+}
+
+tr:nth-child(odd) {
+	@apply bg-secondary-light dark:bg-[#1c1c1c];
+}
+
+.chip {
+	@apply p-0.5 rounded text-[12px] font-bold text-black dark:text-white;
+}
+
+.chip.success,
+.chip.on-going {
+	@apply bg-green-500 dark:bg-green-800;
+}
+
+.chip.ended,
+.chip.fail {
+	@apply bg-red-500 dark:bg-red-800;
+}
+
+.chip.pending {
+	@apply dark:bg-orange-900 bg-orange-500;
+}

@@ -31,7 +31,7 @@ export function formatHackingMethod(text: WebHackingMethods): string {
  * ```formatChallengeStatusToString``` function is use to convert challenge status into string
  * @param text
  * @returns ```string```
- * 
+ *
  * @example ON_GOING -> On Going
  */
 export function formatChallengeStatusToString(status: ChallengeStatus): string {
@@ -41,4 +41,13 @@ export function formatChallengeStatusToString(status: ChallengeStatus): string {
 		.replace(/\b\w/g, char => char.toUpperCase()); // Capitalize the first letter of each word
 
 	return formattedText;
+}
+
+/**
+ * ```getFileExtension``` function is use to parse file extensions.
+ * @example "image.jpg" -> ".jpg"
+ */
+export function getFileExtension(fileName: string): string {
+	const lastDotIndex = fileName.lastIndexOf(".");
+	return lastDotIndex !== -1 ? fileName.substring(lastDotIndex) : "";
 }

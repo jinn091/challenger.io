@@ -33,7 +33,7 @@ export default function Header({
 					<div className="flex flex-wrap gap-2">
 						<span className="font-bold text-md">Welcome, </span>
 						<span className="hover:underline">
-							<Link to={"/profile"}>{user.username}</Link>
+							<Link to="/profile">{user.username}</Link>
 						</span>
 					</div>
 					<Form action="/logout" method="post">

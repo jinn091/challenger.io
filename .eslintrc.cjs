@@ -29,7 +29,8 @@ module.exports = {
 		indent: "off",
 		"no-mixed-spaces-and-tabs": "off",
 		"jsx-a11y/click-events-have-key-events": 0,
-		"jsx-a11y/no-noninteractive-element-interactions": 0
+		"jsx-a11y/no-noninteractive-element-interactions": 0,
+		"jsx-a11y/no-static-element-interactions": 0
 	},
 	overrides: [
 		// React
@@ -61,7 +62,8 @@ module.exports = {
 				indent: "off",
 				"no-mixed-spaces-and-tabs": "off",
 				"jsx-a11y/click-events-have-key-events": 0,
-				"jsx-a11y/no-noninteractive-element-interactions": 0
+				"jsx-a11y/no-noninteractive-element-interactions": 0,
+				"jsx-a11y/no-static-element-interactions": 0
 			}
 		},
 
@@ -92,7 +94,8 @@ module.exports = {
 				indent: "off",
 				"no-mixed-spaces-and-tabs": "off",
 				"jsx-a11y/click-events-have-key-events": 0,
-				"jsx-a11y/no-noninteractive-element-interactions": 0
+				"jsx-a11y/no-noninteractive-element-interactions": 0,
+				"jsx-a11y/no-static-element-interactions": 0
 			}
 		},
 

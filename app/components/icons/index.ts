@@ -8,6 +8,7 @@ import Profile from "./Profile";
 import Username from "./Usename";
 import Battle from "./Battle";
 import LeaderBoard from "./LeaderBoard";
+import Action from "./Action";
 export {
 	Class,
 	Challenge,
@@ -18,5 +19,6 @@ export {
 	Profile,
 	Username,
 	Battle,
-	LeaderBoard
+	LeaderBoard,
+	Action
 };

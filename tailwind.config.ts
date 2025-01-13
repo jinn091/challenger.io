@@ -7,7 +7,7 @@ export default {
 			backgroundColor: {
 				"primary-light": "white",
 				"primary-dark": "#161616",
-				"secondary-light": "#fcfcfc",
+				"secondary-light": "#e6e3e3",
 				"secondary-dark": "#222222"
 			}
 		}

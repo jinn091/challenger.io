@@ -1,6 +1,11 @@
-import { Form, useActionData, useRouteLoaderData } from "@remix-run/react";
+import {
+	Form,
+	Link,
+	useActionData,
+	useRouteLoaderData
+} from "@remix-run/react";
 import React, { useState } from "react";
-import { loader as profileRootLoader } from "../_layout";
+import { loader as profileRootLoader } from "../../_layout";
 import { WebHackingMethods } from "~/utils/constant";
 import { formatHackingMethod } from "~/utils/format";
 import { ActionFunctionArgs, json, TypedResponse } from "@remix-run/node";
@@ -314,6 +319,13 @@ export default function ProfileRoute(): React.JSX.Element {
 			<button className="bg-green-500 dark:bg-blue-900 p-2 rounded self-start">
 				<span>Create Challenge</span>
 			</button>
+
+			<Link
+				to="/profile/challenges"
+				className="bg-[#b1b1b1] dark:bg-[#333] self-start px-4 py-2 rounded"
+			>
+				<span> {"<-"} Back </span>
+			</Link>
 		</Form>
 	);
 }
