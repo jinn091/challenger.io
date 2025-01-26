@@ -7,6 +7,7 @@ import { getChallengesByUserId } from "~/model/challenge.server";
 import { Challenge, ChallengeSubmission } from "@prisma/client";
 import dayjs from "dayjs";
 import { formatChallengeStatusToString } from "~/utils/format";
+import { Edit } from "~/components/icons";
 
 export async function loader({ request }: LoaderFunctionArgs): Promise<
 	TypedResponse<{
@@ -44,6 +45,7 @@ export default function ProfileRoute(): React.JSX.Element {
 							<th>Prize</th>
 							<th>Status</th>
 							<th>Total Submissions</th>
+							<th>Action</th>
 							<th>Created At</th>
 						</tr>
 					</thead>
@@ -96,6 +98,15 @@ export default function ProfileRoute(): React.JSX.Element {
 								</td>
 								<td>
 									{dayjs(ch.createdAt).format("DD/MM/YYYY")}
+								</td>
+								<td>
+									<Link
+										to={`/profile/challenges/${ch.id}/update`}
+										className="flex items-center gap-2 hover:underline"
+									>
+										<Edit width={20} height={20} />
+										<p>Edit</p>
+									</Link>
 								</td>
 							</tr>
 						))}

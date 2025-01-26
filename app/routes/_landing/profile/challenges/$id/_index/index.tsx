@@ -81,27 +81,36 @@ export async function action({
 		});
 	}
 
-	if (action == "accept") {
-		await updateChallengeSubmissionsStatus({
-			challengeId: challengeRequest.challengeId,
-			status: ChallengeSubmissionStatus.FAIL
-		});
-		await updateChallengeSubmissionStatus({
-			id: challengeRequest.id,
-			status: ChallengeSubmissionStatus.SUCCESS
-		});
-		await updateChallengeWinnerById({
-			id: challengeRequest.challengeId,
-			winnerId: challengeRequest.userId
-		});
-	} else {
-		// Return eject
-		await updateChallengeSubmissionStatus({
-			id: challengeRequest.id,
-			status: ChallengeSubmissionStatus.FAIL
+	try {
+		if (action == "accept") {
+			await updateChallengeSubmissionsStatus({
+				challengeId: challengeRequest.challengeId,
+				status: ChallengeSubmissionStatus.FAIL
+			});
+			await updateChallengeSubmissionStatus({
+				id: challengeRequest.id,
+				status: ChallengeSubmissionStatus.SUCCESS
+			});
+			await updateChallengeWinnerById({
+				id: challengeRequest.challengeId,
+				winnerId: challengeRequest.userId
+			});
+		} else {
+			// Return eject
+			await updateChallengeSubmissionStatus({
+				id: challengeRequest.id,
+				status: ChallengeSubmissionStatus.FAIL
+			});
+		}
+	} catch (error) {
+		return json({
+			ok: false,
+			error: {
+				fields,
+				message: "Something went wrong."
+			}
 		});
 	}
-
 	return json({ ok: true, data: null });
 }
 
@@ -118,8 +127,11 @@ export async function loader({ request, params }: LoaderFunctionArgs): Promise<
 	const challengeId = parseInt(params.id ?? "", 10);
 	const challenge = await getChallengeById(challengeId);
 
-	if (!challengeId || challenge == null) {
+	if (!challengeId || challenge == null || challenge.creatorId !== user.id) {
 		//  Return challenge not found error
+		throw new Response("Challenge Not Found!", {
+			status: 404
+		});
 	}
 
 	const challengeSubmissions = await getChallengeSubmissionsByChallengeId(

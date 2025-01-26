@@ -90,8 +90,8 @@ export default function GetIndex() {
 									)}
 								</div>
 							</div>
-							<div className="flex flex-col items-start">
-								<p className="text-[12px] sm:text-[1rem] whitespace-nowrap">
+							<div className="flex flex-col items-start min-w-[130px] max-w-[130px]">
+								<p className="text-[12px] sm:text-[14px] whitespace-nowrap">
 									Price: {prize.toLocaleString()} MMK
 								</p>
 								<span

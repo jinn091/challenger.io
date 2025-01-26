@@ -171,3 +171,47 @@ export async function updateChallengeWinnerById({
 		}
 	});
 }
+
+export async function updateChallengeById({
+	id,
+	name,
+	targetLink,
+	prize,
+	methods,
+	status,
+	note
+}: {
+	id: number;
+	name: string;
+	targetLink: string;
+	prize: number;
+	methods: WebHackingMethods[];
+	status: ChallengeStatus;
+	note: string;
+}) {
+	try {
+		await db.challenge.update({
+			data: {
+				name,
+				targetLink,
+				prize,
+				methods,
+				status,
+				note
+			},
+			where: {
+				id: id
+			}
+		});
+
+		return {
+			ok: true,
+			data: null
+		};
+	} catch (error) {
+		return {
+			ok: false,
+			error: null
+		};
+	}
+}

@@ -9,6 +9,7 @@ import Username from "./Usename";
 import Battle from "./Battle";
 import LeaderBoard from "./LeaderBoard";
 import Action from "./Action";
+import Edit from "./Edit";
 export {
 	Class,
 	Challenge,
@@ -20,5 +21,6 @@ export {
 	Username,
 	Battle,
 	LeaderBoard,
-	Action
+	Action,
+	Edit
 };

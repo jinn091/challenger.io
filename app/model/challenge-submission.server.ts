@@ -90,6 +90,9 @@ export async function getChallengeSubmissionsByChallengeId(
 					id: true
 				}
 			}
+		},
+		orderBy: {
+			status: "asc"
 		}
 	});
 
