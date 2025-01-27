@@ -25,8 +25,8 @@ export default function ProfileLayout(): React.JSX.Element {
 	} = useLoaderData<typeof loader>();
 
 	return (
-		<div className="m-8 flex gap-8 w-full">
-			<div className="flex flex-col gap-4 max-w-[400px]">
+		<div className="m-4 lg:m-8 flex gap-8 w-full overflow-y-auto">
+			<div className="hidden lg:flex flex-col gap-4 max-w-[400px]">
 				<img
 					className="w-[300px] h-[300px]"
 					src="https://imgcdn.stablediffusionweb.com/2024/4/17/3b3ceb83-440b-4402-8461-00514a71c584.jpg"
@@ -91,19 +91,31 @@ export default function ProfileLayout(): React.JSX.Element {
 			</div>
 
 			<div className="flex flex-col gap-4 flex-1">
-				<div>
-					<h1 className="text-xl font-bold">
-						{username} - <small>{"< " + email + " />"}</small>
-					</h1>
-					<p>💻 Ethical Hacker</p>
-					<small className="text-gray-500 dark:text-gray-300">
-						{note}
-					</small>
-				</div>
+				<div className="flex gap-4">
+					<img
+						className="lg:hidden flex w-[100px] h-[100px] rounded-full"
+						src="https://imgcdn.stablediffusionweb.com/2024/4/17/3b3ceb83-440b-4402-8461-00514a71c584.jpg"
+						alt="profile-avatar"
+					/>
+					<div>
+						<div>
+							<h2 className="text-md lg:text-xl font-bold">
+								{username} -{" "}
+								<small>{"< " + email + " />"}</small>
+							</h2>
+							<p>💻 Ethical Hacker</p>
+							<small className="text-gray-500 dark:text-gray-300">
+								{note}
+							</small>
+						</div>
 
-				<div>
-					<h2 className="text-xl font-bold">Ranking</h2>
-					<small>#78758739</small>
+						<div>
+							<h2 className="text-md lg:text-xl font-bold">
+								Ranking
+							</h2>
+							<small>#78758739</small>
+						</div>
+					</div>
 				</div>
 
 				{(gitHubLink ||
@@ -112,7 +124,9 @@ export default function ProfileLayout(): React.JSX.Element {
 					redditLink ||
 					teleLink) && (
 					<div>
-						<h2 className="text-xl font-bold">Social Medias</h2>
+						<h2 className="text-md lg:text-xl font-bold">
+							Social Medias
+						</h2>
 						<div className="flex gap-2">
 							{gitHubLink && (
 								<Link
@@ -182,7 +196,7 @@ export default function ProfileLayout(): React.JSX.Element {
 						</div>
 					</div>
 				)}
-				<ul className="flex items-center gap-4 bg-[silver] dark:bg-secondary-dark rounded p-1">
+				<ul className="flex self-start flex-wrap items-center gap-4 bg-[silver] dark:bg-secondary-dark rounded p-1 text-sm lg:text-md">
 					<NavLink
 						className="p-2 hover:text-black rounded hover:bg-sky-400"
 						to="/profile"

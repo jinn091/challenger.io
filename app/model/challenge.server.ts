@@ -153,24 +153,8 @@ export async function getChallengesByUserId(
 }
 
 /**
- * This function is use to update challenge winner
+ * This function is use to update challenge
  */
-export async function updateChallengeWinnerById({
-	id,
-	winnerId
-}: {
-	id: number;
-	winnerId: string;
-}): Promise<Challenge> {
-	return await db.challenge.update({
-		where: {
-			id
-		},
-		data: {
-			winnerId
-		}
-	});
-}
 
 export async function updateChallengeById({
 	id,
@@ -179,39 +163,34 @@ export async function updateChallengeById({
 	prize,
 	methods,
 	status,
-	note
+	note,
+	winnerId
 }: {
 	id: number;
-	name: string;
-	targetLink: string;
-	prize: number;
-	methods: WebHackingMethods[];
-	status: ChallengeStatus;
-	note: string;
+	name?: string;
+	targetLink?: string;
+	prize?: number;
+	methods?: WebHackingMethods[];
+	status?: ChallengeStatus;
+	note?: string;
+	winnerId?: string;
 }) {
 	try {
 		await db.challenge.update({
 			data: {
-				name,
-				targetLink,
-				prize,
-				methods,
-				status,
-				note
+				...(name && { name }),
+				...(targetLink && { targetLink }),
+				...(prize && { prize }),
+				...(methods && { methods }),
+				...(status && { status }),
+				...(note && { note }),
+				...(winnerId && { winnerId })
 			},
-			where: {
-				id: id
-			}
+			where: { id }
 		});
 
-		return {
-			ok: true,
-			data: null
-		};
+		return { ok: true, data: null };
 	} catch (error) {
-		return {
-			ok: false,
-			error: null
-		};
+		return { ok: false, error: null };
 	}
 }

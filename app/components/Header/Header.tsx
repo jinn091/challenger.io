@@ -29,7 +29,7 @@ export default function Header({
 					</Link>
 				</div>
 			) : (
-				<div className="flex gap-1 items-center mx-4">
+				<div className="flex gap-4 items-center mx-4">
 					<div className="flex flex-wrap gap-2">
 						<span className="font-bold text-md">Welcome, </span>
 						<span className="hover:underline">

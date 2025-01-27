@@ -142,7 +142,7 @@ export default function ProfileRoute(): React.JSX.Element {
 		>
 			<h1 className="font-bold text-xl">Update Information</h1>
 
-			<div className="flex gap-20">
+			<div className="flex flex-wrap lg:gap-20">
 				<div className="flex flex-col gap-4">
 					<div className="flex flex-col dark:text-white">
 						<label

@@ -107,14 +107,17 @@ export default function GetIndex() {
 				)}
 			</div>
 			<div className="bg-secondary-light dark:bg-secondary-dark gap-2 p-4 border-[.01px] dark:border-gray-500 rounded min-w-[400px] hidden xl:flex sticky top-0">
-				<Form>
+				<Form className="flex flex-col w-full">
 					<h2 className="font-bold">Filter</h2>
 					<div className="h-[1px] w-full bg-gray-300 dark:bg-gray-700 my-2"></div>
 
 					<p>Tabs</p>
 					<div className="py-2 grid grid-cols-8 gap-4 sticky top-0 self-start min-w-full rounded">
 						{Array.from({
-							length: Math.ceil(challengeCount / 8)
+							length:
+								Math.ceil(challengeCount / 8) === 0
+									? 1
+									: Math.ceil(challengeCount / 8)
 						}).map((_, index) => (
 							<Link key={index} to={`?index=${index + 1}`}>
 								<span className="py-1 px-3 border-[.01px] border-gray-800 dark:border-gray-500 rounded">

@@ -66,7 +66,7 @@ th {
 }
 
 tr:nth-child(even) {
-	@apply dark:bg-[#2c2c2a];
+	@apply bg-[#b1b1b1] dark:bg-[#2c2c2a];
 }
 
 tr:nth-child(odd) {
@@ -87,6 +87,7 @@ tr:nth-child(odd) {
 	@apply bg-red-500 dark:bg-red-800;
 }
 
-.chip.pending {
+.chip.pending,
+.chip.done {
 	@apply dark:bg-orange-900 bg-orange-500;
 }

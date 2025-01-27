@@ -1,4 +1,8 @@
-import { ChallengeSubmission, ChallengeSubmissionStatus } from "@prisma/client";
+import {
+	ChallengeStatus,
+	ChallengeSubmission,
+	ChallengeSubmissionStatus
+} from "@prisma/client";
 import {
 	ActionFunctionArgs,
 	json,
@@ -21,7 +25,7 @@ import {
 } from "~/model/challenge-submission.server";
 import {
 	getChallengeById,
-	updateChallengeWinnerById
+	updateChallengeById
 } from "~/model/challenge.server";
 import { getUserById } from "~/model/user.server";
 import { FormError } from "~/utils/error.server";
@@ -71,7 +75,11 @@ export async function action({
 		challengeRequestId
 	);
 
-	if (!challengeRequest || challengeRequest.userId == user.id) {
+	if (
+		!challengeRequest ||
+		challengeRequest.userId == user.id ||
+		challengeRequest.challenge.status === "DONE"
+	) {
 		return json({
 			ok: false,
 			error: {
@@ -91,9 +99,10 @@ export async function action({
 				id: challengeRequest.id,
 				status: ChallengeSubmissionStatus.SUCCESS
 			});
-			await updateChallengeWinnerById({
+			await updateChallengeById({
 				id: challengeRequest.challengeId,
-				winnerId: challengeRequest.userId
+				winnerId: challengeRequest.userId,
+				status: ChallengeStatus.DONE
 			});
 		} else {
 			// Return eject
@@ -117,7 +126,7 @@ export async function action({
 export async function loader({ request, params }: LoaderFunctionArgs): Promise<
 	TypedResponse<{
 		challengeSubmissions: (ChallengeSubmission & {
-			challenge: { name: string };
+			challenge: { name: string; status: ChallengeStatus };
 			user: { username: string; id: string };
 		})[];
 	}>
@@ -177,7 +186,7 @@ function ChallengeSubmissionRow({
 }: {
 	ch: SerializeFrom<
 		ChallengeSubmission & {
-			challenge: { name: string };
+			challenge: { name: string; status: ChallengeStatus };
 			user: { username: string; id: string };
 		}
 	>;
@@ -226,53 +235,59 @@ function ChallengeSubmissionRow({
 			</td>
 			<td>{dayjs(ch.createdAt).fromNow()}</td>
 			<td>
-				<div className="relative">
-					<button
-						className="z-0"
-						onClick={() => setShowAction(!showAction)}
-					>
-						<Action
-							width={25}
-							height={25}
-							className="dark:fill-white fill-black"
-						/>
-					</button>
-					{showAction ? (
-						<Popover onClickOutside={() => setShowAction(false)}>
-							<Form method="POST">
-								<ul className="z-50 bg-secondary-light dark:bg-[#1c1c1c] rounded-md flex flex-col absolute right-0 border border-[#2c2c2a]">
-									<input
-										type="hidden"
-										name="challengeRequestId"
-										value={ch.id}
-									/>
-									<li className="hover:bg-[green] hover:text-gray-800 rounded-md">
-										<button
-											type="submit"
-											name="action"
-											value="accept"
-											className="px-8 py-2 font-semibold"
-										>
-											Accept
-										</button>
-									</li>
-									<li className="hover:bg-[red] hover:text-gray-800 rounded-md">
-										<button
-											type="submit"
-											name="action"
-											value="reject"
-											className="px-8 py-2 font-semibold"
-										>
-											Reject
-										</button>
-									</li>
-								</ul>
-							</Form>
-						</Popover>
-					) : (
-						<></>
-					)}
-				</div>
+				{ch.challenge.status === ChallengeStatus.ON_GOING ? (
+					<div className="relative">
+						<button
+							className="z-0"
+							onClick={() => setShowAction(!showAction)}
+						>
+							<Action
+								width={25}
+								height={25}
+								className="dark:fill-white fill-black"
+							/>
+						</button>
+						{showAction ? (
+							<Popover
+								onClickOutside={() => setShowAction(false)}
+							>
+								<Form method="POST">
+									<ul className="z-50 bg-secondary-light dark:bg-[#1c1c1c] rounded-md flex flex-col absolute right-0 border border-[#2c2c2a]">
+										<input
+											type="hidden"
+											name="challengeRequestId"
+											value={ch.id}
+										/>
+										<li className="hover:bg-[green] hover:text-gray-800 rounded-md">
+											<button
+												type="submit"
+												name="action"
+												value="accept"
+												className="px-8 py-2 font-semibold"
+											>
+												Accept
+											</button>
+										</li>
+										<li className="hover:bg-[red] hover:text-gray-800 rounded-md">
+											<button
+												type="submit"
+												name="action"
+												value="reject"
+												className="px-8 py-2 font-semibold"
+											>
+												Reject
+											</button>
+										</li>
+									</ul>
+								</Form>
+							</Popover>
+						) : (
+							<></>
+						)}
+					</div>
+				) : (
+					<p>-</p>
+				)}
 			</td>
 		</tr>
 	);

@@ -30,7 +30,7 @@ export default function ProfileRoute(): React.JSX.Element {
 
 			<Link
 				to="/profile/challenges/create"
-				className="bg-[#b1b1b1] dark:bg-[#333] self-end px-4 py-2 rounded"
+				className="bg-[#b1b1b1] dark:bg-[#333] self-start lg:self-end px-4 py-2 rounded"
 			>
 				<span>New +</span>
 			</Link>

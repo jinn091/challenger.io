@@ -151,10 +151,10 @@ export default function ProfileRoute(): React.JSX.Element {
 	};
 
 	return (
-		<Form method="POST" className="flex flex-col gap-4">
+		<Form method="POST" className="flex flex-col gap-4 overflow-auto">
 			<h1 className="font-bold text-xl">Challenges</h1>
 
-			<div className="flex gap-20">
+			<div className="flex flex-wrap lg:flex-nowrap lg:gap-20">
 				<div className="flex flex-col gap-4">
 					<div className="flex flex-col dark:text-white">
 						<label className="dark:text-white" htmlFor="name-input">

@@ -1,5 +1,6 @@
 import {
 	Challenge,
+	ChallengeStatus,
 	ChallengeSubmission,
 	ChallengeSubmissionStatus
 } from "@prisma/client";
@@ -67,7 +68,7 @@ export async function getChallengeSubmissionsByChallengeId(
 	userId: string
 ): Promise<
 	(ChallengeSubmission & {
-		challenge: { name: string };
+		challenge: { name: string; status: ChallengeStatus };
 		user: { username: string; id: string };
 	})[]
 > {
@@ -81,7 +82,8 @@ export async function getChallengeSubmissionsByChallengeId(
 		include: {
 			challenge: {
 				select: {
-					name: true
+					name: true,
+					status: true
 				}
 			},
 			user: {
