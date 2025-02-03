@@ -12,7 +12,10 @@ type LoginForm = z.infer<typeof LoginSchema>;
 
 const LoginSchema = z.object({
 	email: z.string().trim().email("Email is not valid"),
-	password: z.string().min(8, "Password is too short")
+	password: z
+		.string()
+		.min(8, "Password is too short")
+		.max(500, "Password is too long")
 });
 
 export async function action({

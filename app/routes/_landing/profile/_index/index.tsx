@@ -85,7 +85,7 @@ export async function action({
 		});
 	}
 
-	// Check whether username is alraedy exist or not
+	// Check whether username is already exist or not
 	if (await isUsernameAlreadyExist(user.id, parseResult.data.username)) {
 		return json({
 			ok: false,
@@ -130,7 +130,9 @@ export default function ProfileRoute(): React.JSX.Element {
 	const data = useRouteLoaderData<typeof profileRootLoader>(
 		"routes/_landing/profile/_layout"
 	);
-	const [noteCount, setNoteCount] = useState<number>(data?.note?.length ?? 0);
+	const [noteCount, setNoteCount] = useState<number>(
+		data?.user?.note?.length ?? 0
+	);
 	const actionData = useActionData<typeof action>();
 	const fieldErrors = !actionData?.ok ? actionData?.error.errors : null;
 	const errorMessage = !actionData?.ok ? actionData?.error.message : null;
@@ -162,7 +164,7 @@ export default function ProfileRoute(): React.JSX.Element {
 								type="text"
 								name="username"
 								className="w-full outline-none bg-[#cfcece] dark:bg-secondary-dark dark:text-white"
-								defaultValue={data?.username ?? ""}
+								defaultValue={data?.user.username ?? ""}
 								placeholder="Username"
 								required
 							/>
@@ -188,7 +190,7 @@ export default function ProfileRoute(): React.JSX.Element {
 								type="email"
 								name="email"
 								className="w-full outline-none bg-[#cfcece] dark:bg-secondary-dark dark:text-white"
-								defaultValue={data?.email ?? ""}
+								defaultValue={data?.user.email ?? ""}
 								placeholder="Email"
 							/>
 						</div>
@@ -214,7 +216,7 @@ export default function ProfileRoute(): React.JSX.Element {
 								onChange={e => {
 									setNoteCount(e.currentTarget.value.length);
 								}}
-								defaultValue={data?.note ?? ""}
+								defaultValue={data?.user.note ?? ""}
 								placeholder="Note"
 							/>
 						</div>
@@ -239,7 +241,7 @@ export default function ProfileRoute(): React.JSX.Element {
 								type="text"
 								name="facebook"
 								className="w-full outline-none bg-[#cfcece] dark:bg-secondary-dark dark:text-white"
-								defaultValue={data?.fbLink ?? ""}
+								defaultValue={data?.user.fbLink ?? ""}
 								placeholder="Facebook URL"
 							/>
 						</div>
@@ -265,7 +267,7 @@ export default function ProfileRoute(): React.JSX.Element {
 								type="text"
 								name="telegram"
 								className="w-full outline-none bg-[#cfcece] dark:bg-secondary-dark dark:text-white"
-								defaultValue={data?.teleLink ?? ""}
+								defaultValue={data?.user.teleLink ?? ""}
 								placeholder="Telegram URL"
 							/>
 						</div>
@@ -289,7 +291,7 @@ export default function ProfileRoute(): React.JSX.Element {
 								type="text"
 								name="reddit"
 								className="w-full outline-none bg-[#cfcece] dark:bg-secondary-dark dark:text-white"
-								defaultValue={data?.redditLink ?? ""}
+								defaultValue={data?.user.redditLink ?? ""}
 								placeholder="Reddit URL"
 							/>
 						</div>
@@ -313,7 +315,7 @@ export default function ProfileRoute(): React.JSX.Element {
 								type="text"
 								name="linkedin"
 								className="w-full outline-none bg-[#cfcece] dark:bg-secondary-dark dark:text-white"
-								defaultValue={data?.linkedInLink ?? ""}
+								defaultValue={data?.user.linkedInLink ?? ""}
 								placeholder="LinkedIn URL"
 							/>
 						</div>
@@ -337,7 +339,7 @@ export default function ProfileRoute(): React.JSX.Element {
 								type="text"
 								name="github"
 								className="w-full outline-none bg-[#cfcece] dark:bg-secondary-dark dark:text-white"
-								defaultValue={data?.gitHubLink ?? ""}
+								defaultValue={data?.user.gitHubLink ?? ""}
 								placeholder="GitHub URL"
 							/>
 						</div>

@@ -16,7 +16,10 @@ type RegisterForm = z.infer<typeof RegisterSchema>;
 
 const RegisterSchema = z.object({
 	email: z.string().trim().email("Email is not valid"),
-	password: z.string().min(8, "Password is too short"),
+	password: z
+		.string()
+		.min(8, "Password is too short")
+		.max(500, "Password is too long"),
 	username: z
 		.string()
 		.min(4, "Username is too short")

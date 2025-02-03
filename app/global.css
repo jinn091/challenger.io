@@ -91,3 +91,7 @@ tr:nth-child(odd) {
 .chip.done {
 	@apply dark:bg-orange-900 bg-orange-500;
 }
+
+dialog {
+	@apply bg-white dark:bg-primary-dark text-black dark:text-white p-4 border rounded;
+}

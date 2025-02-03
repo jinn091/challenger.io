@@ -130,7 +130,9 @@ export default function ProfileRoute(): React.JSX.Element {
 	const fields = !actionData?.ok ? actionData?.error.fields : null;
 	const fieldErrors = !actionData?.ok ? actionData?.error.errors : null;
 	const errorMessage = !actionData?.ok ? actionData?.error.message : null;
-	const [noteCount, setNoteCount] = useState<number>(data?.note?.length ?? 0);
+	const [noteCount, setNoteCount] = useState<number>(
+		data?.user.note?.length ?? 0
+	);
 	const [selectedMethods, setSelectedMethods] = useState<WebHackingMethods[]>(
 		[]
 	);

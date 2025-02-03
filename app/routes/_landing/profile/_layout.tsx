@@ -1,27 +1,39 @@
+import { Challenge } from "@prisma/client";
 import { json, LoaderFunctionArgs, TypedResponse } from "@remix-run/node";
 import { Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
 import { authenticate } from "~/model/auth.server";
+import { getWonChallengesByUserId } from "~/model/challenge.server";
 import { getUserById, UserInfo } from "~/model/user.server";
 import { WebHackingMethods } from "~/utils/constant";
 
-export async function loader({
-	request
-}: LoaderFunctionArgs): Promise<TypedResponse<UserInfo>> {
+export async function loader({ request }: LoaderFunctionArgs): Promise<
+	TypedResponse<{
+		user: UserInfo;
+		achievements: Challenge[];
+	}>
+> {
 	const user = await authenticate(request, userId => getUserById(userId));
+	const achievements = await getWonChallengesByUserId(user.id);
 
-	return json(user);
+	return json({
+		user,
+		achievements
+	});
 }
 
 export default function ProfileLayout(): React.JSX.Element {
 	const {
-		username,
-		email,
-		note,
-		fbLink,
-		gitHubLink,
-		linkedInLink,
-		teleLink,
-		redditLink
+		user: {
+			username,
+			email,
+			note,
+			fbLink,
+			gitHubLink,
+			linkedInLink,
+			teleLink,
+			redditLink
+		},
+		achievements
 	} = useLoaderData<typeof loader>();
 
 	return (
@@ -40,31 +52,40 @@ export default function ProfileLayout(): React.JSX.Element {
 							Achievements
 						</h5>
 					</li>
-					<li className="flex flex-col">
-						<h2 className="text-xl font-bold">
-							Open Redirect Challenge
-						</h2>
-						<p className="text-[.9rem]">
-							Target - <Link to={"."}>https://example.com</Link>
-						</p>
-						<p className="text-[.9rem]">Prize - 1000 MMK</p>
-						<Link to={""} className="text-[.8rem] hover:underline">
-							View details {">>"}
-						</Link>
-					</li>
 
-					<li className="flex flex-col">
-						<h2 className="text-xl font-bold">
-							Server Side Execution Challenge
-						</h2>
-						<p className="text-[.9rem]">
-							Target - <Link to={"."}>https://example.com</Link>
+					{achievements.length > 0 ? (
+						achievements.map(ach => (
+							<li key={ach.id} className="flex flex-col">
+								<h2 className="text-xl font-bold">
+									{ach.name}
+								</h2>
+								<p className="text-[.9rem]">
+									Target -{" "}
+									<Link to={"."}>{ach.targetLink}</Link>
+								</p>
+								<p className="text-[.9rem]">
+									Prize - {ach.prize.toLocaleString()} MMK
+								</p>
+								<Link
+									to={""}
+									className="text-[.8rem] hover:underline"
+								>
+									View details {">>"}
+								</Link>
+							</li>
+						))
+					) : (
+						<p className="text-sm font-bold text-gray-600">
+							You don&apos;t have any achievement yet! Don&apos;t
+							give up,{" "}
+							<a
+								className="hover:underline dark:hover:text-gray-300"
+								href="/"
+							>
+								try now.
+							</a>
 						</p>
-						<p className="text-[.9rem]">Prize - 10000 MMK</p>
-						<Link to={""} className="text-[.8rem] hover:underline">
-							View details {">>"}
-						</Link>
-					</li>
+					)}
 				</ul>
 
 				<div className="h-[1px] w-full bg-gray-300 dark:bg-gray-700 my-2"></div>

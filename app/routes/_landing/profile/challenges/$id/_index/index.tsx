@@ -12,7 +12,7 @@ import {
 } from "@remix-run/node";
 import { Form, Link, useLoaderData } from "@remix-run/react";
 import dayjs from "dayjs";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { z } from "zod";
 import { Action } from "~/components/icons";
 import Popover from "~/components/Popover";
@@ -193,6 +193,7 @@ function ChallengeSubmissionRow({
 }): React.JSX.Element {
 	const [showAction, setShowAction] = useState<boolean>(false);
 	const [imagePreview, setImagePreview] = useState<boolean>(false);
+	const dialogRef = useRef<HTMLDialogElement>(null);
 
 	return (
 		<tr key={ch.id}>
@@ -248,39 +249,82 @@ function ChallengeSubmissionRow({
 							/>
 						</button>
 						{showAction ? (
-							<Popover
-								onClickOutside={() => setShowAction(false)}
-							>
-								<Form method="POST">
+							<>
+								<Popover
+									onClickOutside={() => setShowAction(false)}
+								>
 									<ul className="z-50 bg-secondary-light dark:bg-[#1c1c1c] rounded-md flex flex-col absolute right-0 border border-[#2c2c2a]">
-										<input
-											type="hidden"
-											name="challengeRequestId"
-											value={ch.id}
-										/>
 										<li className="hover:bg-[green] hover:text-gray-800 rounded-md">
 											<button
-												type="submit"
-												name="action"
-												value="accept"
+												type="button"
+												onClick={() => {
+													dialogRef.current?.showModal();
+												}}
 												className="px-8 py-2 font-semibold"
 											>
 												Accept
 											</button>
 										</li>
 										<li className="hover:bg-[red] hover:text-gray-800 rounded-md">
-											<button
-												type="submit"
-												name="action"
-												value="reject"
-												className="px-8 py-2 font-semibold"
-											>
-												Reject
-											</button>
+											<Form method="POST">
+												<input
+													type="hidden"
+													name="challengeRequestId"
+													value={ch.id}
+												/>
+												<button
+													type="submit"
+													name="action"
+													value="reject"
+													className="px-8 py-2 font-semibold"
+												>
+													Reject
+												</button>
+											</Form>
 										</li>
 									</ul>
-								</Form>
-							</Popover>
+									<dialog
+										ref={dialogRef}
+										className="max-w-[400px]"
+									>
+										<h2 className="text-xl font-bold">
+											Confirm choosing winner
+										</h2>
+										<div className="h-[1px] w-full bg-gray-300 dark:bg-gray-700 my-2"></div>
+										<p className="py-2 font-bold text-gray-200">
+											After marking {ch.user.username} as
+											winner, other requests will
+											automatically reject. Are you sure
+											you want to continue?
+										</p>
+										<div className="flex justify-center gap-4">
+											<Form method="POST">
+												<input
+													type="hidden"
+													name="challengeRequestId"
+													value={ch.id}
+												/>
+												<button
+													name="action"
+													value="accept"
+													className="bg-green-600 px-4 py-1.5 rounded text-black font-semibold"
+												>
+													<span>Continue</span>
+												</button>
+											</Form>
+											<button
+												type="button"
+												className="bg-red-600 px-4 py-1.5 rounded text-black font-semibold"
+												onClick={() =>
+													dialogRef.current?.close()
+												}
+											>
+												<span>Cancel</span>
+											</button>
+										</div>
+									</dialog>
+								</Popover>
+							</>
 						) : (
 							<></>
 						)}

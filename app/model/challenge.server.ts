@@ -194,3 +194,22 @@ export async function updateChallengeById({
 		return { ok: false, error: null };
 	}
 }
+
+/**
+ * ```getWonChallengeByUserId``` function is used to fetch the challenges that user have won
+ * @param userId
+ * @returns
+ */
+export async function getWonChallengesByUserId(
+	userId: string
+): Promise<Challenge[]> {
+	return await db.challenge.findMany({
+		where: {
+			winnerId: userId
+		},
+		orderBy: {
+			id: "desc"
+		},
+		take: 2
+	});
+}
