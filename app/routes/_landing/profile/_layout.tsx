@@ -13,7 +13,7 @@ export async function loader({ request }: LoaderFunctionArgs): Promise<
 	}>
 > {
 	const user = await authenticate(request, userId => getUserById(userId));
-	const achievements = await getWonChallengesByUserId(user.id);
+	const achievements = await getWonChallengesByUserId(user.id, 3);
 
 	return json({
 		user,
@@ -118,13 +118,12 @@ export default function ProfileLayout(): React.JSX.Element {
 						src="https://imgcdn.stablediffusionweb.com/2024/4/17/3b3ceb83-440b-4402-8461-00514a71c584.jpg"
 						alt="profile-avatar"
 					/>
-					<div>
+					<div className="flex flex-col gap-4">
 						<div>
 							<h2 className="text-md lg:text-xl font-bold">
 								{username} -{" "}
 								<small>{"< " + email + " />"}</small>
 							</h2>
-							<p>💻 Ethical Hacker</p>
 							<small className="text-gray-500 dark:text-gray-300">
 								{note}
 							</small>
@@ -231,14 +230,6 @@ export default function ProfileLayout(): React.JSX.Element {
 						to={"/profile/challenges"}
 					>
 						Challenges
-					</NavLink>
-
-					<NavLink
-						className="p-2 hover:text-black rounded hover:bg-sky-400"
-						to={"/"}
-						end
-					>
-						Awards
 					</NavLink>
 
 					<NavLink

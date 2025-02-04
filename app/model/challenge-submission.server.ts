@@ -68,7 +68,11 @@ export async function getChallengeSubmissionsByChallengeId(
 	userId: string
 ): Promise<
 	(ChallengeSubmission & {
-		challenge: { name: string; status: ChallengeStatus };
+		challenge: {
+			name: string;
+			status: ChallengeStatus;
+			targetLink: string;
+		};
 		user: { username: string; id: string };
 	})[]
 > {
@@ -83,7 +87,8 @@ export async function getChallengeSubmissionsByChallengeId(
 			challenge: {
 				select: {
 					name: true,
-					status: true
+					status: true,
+					targetLink: true
 				}
 			},
 			user: {

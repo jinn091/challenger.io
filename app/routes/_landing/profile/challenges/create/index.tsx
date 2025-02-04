@@ -1,11 +1,5 @@
-import {
-	Form,
-	Link,
-	useActionData,
-	useRouteLoaderData
-} from "@remix-run/react";
+import { Form, Link, useActionData } from "@remix-run/react";
 import React, { useState } from "react";
-import { loader as profileRootLoader } from "../../_layout";
 import { WebHackingMethods } from "~/utils/constant";
 import { formatHackingMethod } from "~/utils/format";
 import { ActionFunctionArgs, json, TypedResponse } from "@remix-run/node";
@@ -123,16 +117,11 @@ export async function action({
 }
 
 export default function ProfileRoute(): React.JSX.Element {
-	const data = useRouteLoaderData<typeof profileRootLoader>(
-		"routes/_landing/profile/_layout"
-	);
 	const actionData = useActionData<typeof action>();
 	const fields = !actionData?.ok ? actionData?.error.fields : null;
 	const fieldErrors = !actionData?.ok ? actionData?.error.errors : null;
 	const errorMessage = !actionData?.ok ? actionData?.error.message : null;
-	const [noteCount, setNoteCount] = useState<number>(
-		data?.user.note?.length ?? 0
-	);
+	const [noteCount, setNoteCount] = useState<number>(0);
 	const [selectedMethods, setSelectedMethods] = useState<WebHackingMethods[]>(
 		[]
 	);

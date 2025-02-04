@@ -41,7 +41,7 @@ export default function GetIndex() {
 							<p className="mt-1">Challenges</p>
 						</Link>
 						<Link
-							to="/dictionary"
+							to="/leaderboard"
 							className="p-2 hover:bg-sky-100 dark:hover:bg-sky-900 text-sm rounded flex gap-1 items-center"
 						>
 							<LeaderBoard

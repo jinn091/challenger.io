@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { Challenge } from "@prisma/client";
+import { Challenge, ChallengeStatus } from "@prisma/client";
 import {
 	ActionFunctionArgs,
 	json,
@@ -7,7 +7,13 @@ import {
 	TypedResponse,
 	unstable_parseMultipartFormData
 } from "@remix-run/node";
-import { Form, Link, useActionData, useLoaderData } from "@remix-run/react";
+import {
+	Form,
+	Link,
+	useActionData,
+	useLoaderData,
+	useNavigation
+} from "@remix-run/react";
 import { getChallengeById } from "~/model/challenge.server";
 import {
 	formatChallengeStatusToString,
@@ -177,7 +183,7 @@ export async function loader({ request, params }: LoaderFunctionArgs): Promise<
 					winner: { username: string } | null;
 			  })
 			| null;
-		isOwnChallenge?: boolean;
+		isChallengeAvailable?: boolean;
 		isChallengeSubmitted?: boolean;
 	}>
 > {
@@ -201,7 +207,9 @@ export async function loader({ request, params }: LoaderFunctionArgs): Promise<
 
 	return json({
 		challenge,
-		isOwnChallenge: challenge?.creatorId === userId,
+		isChallengeAvailable:
+			challenge?.creatorId !== userId &&
+			challenge?.status === ChallengeStatus.ON_GOING,
 		isChallengeSubmitted: await isChallengeSubmitted(
 			parseInt(id, 10),
 			user.id
@@ -210,10 +218,11 @@ export async function loader({ request, params }: LoaderFunctionArgs): Promise<
 }
 
 export default function ChallengeIdRoute(): React.JSX.Element {
-	const { challenge, isChallengeSubmitted, isOwnChallenge } =
+	const { challenge, isChallengeSubmitted, isChallengeAvailable } =
 		useLoaderData<typeof loader>();
 	const [noteCount, setNoteCount] = useState<number>(0);
 	const actionData = useActionData<typeof action>();
+	const navigation = useNavigation();
 	const fieldErrors = !actionData?.ok ? actionData?.error.errors : null;
 	const errorMessage = !actionData?.ok ? actionData?.error.message : null;
 
@@ -232,7 +241,17 @@ export default function ChallengeIdRoute(): React.JSX.Element {
 			<div className="overflow-hidden w-full flex gap-4 mt-6">
 				{/* Challenge Information and upload solution */}
 				<div className="flex flex-col gap-2 flex-1">
-					<h4>🎯 Challenge Target - {challenge.targetLink}</h4>
+					<h4>
+						🎯 Challenge Target -
+						<Link
+							className="hover:underline"
+							target="_blank"
+							to={challenge.targetLink}
+							rel="noreferrer"
+						>
+							{" " + challenge.targetLink}
+						</Link>
+					</h4>
 					<h4>🏹 Challenge Name - {challenge.name}</h4>
 					<h4>
 						🧑🏻‍🦰 Creator Profile -{" "}
@@ -274,7 +293,7 @@ export default function ChallengeIdRoute(): React.JSX.Element {
 					</p>
 					<div className="h-[1px] w-full bg-gray-300 dark:bg-gray-700 my-2"></div>
 
-					{isOwnChallenge ? (
+					{!isChallengeAvailable ? (
 						<p>
 							You cannot submit your own challenge. Manage your
 							challenge at{" "}
@@ -361,7 +380,10 @@ export default function ChallengeIdRoute(): React.JSX.Element {
 							{errorMessage && (
 								<p className="error">{errorMessage}</p>
 							)}
-							<button className="bg-green-500 dark:bg-blue-900 p-2 rounded self-start">
+							<button
+								className="bg-green-500 dark:bg-blue-900 p-2 rounded self-start"
+								disabled={navigation.state === "submitting"}
+							>
 								<span>Submit</span>
 							</button>{" "}
 						</Form>

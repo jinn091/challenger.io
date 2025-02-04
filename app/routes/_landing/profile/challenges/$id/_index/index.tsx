@@ -126,7 +126,11 @@ export async function action({
 export async function loader({ request, params }: LoaderFunctionArgs): Promise<
 	TypedResponse<{
 		challengeSubmissions: (ChallengeSubmission & {
-			challenge: { name: string; status: ChallengeStatus };
+			challenge: {
+				name: string;
+				status: ChallengeStatus;
+				targetLink: string;
+			};
 			user: { username: string; id: string };
 		})[];
 	}>
@@ -158,11 +162,21 @@ export default function ChallengeSubmissionRoute(): React.JSX.Element {
 		<div className="flex flex-col gap-4 overflow-hidden h-full">
 			<h1 className="font-bold text-xl">Challenge Submissions</h1>
 
+			<div className="flex gap-2">
+				<h3>{challengeSubmissions[0].challenge.name}</h3>(
+				<a
+					className="hover:underline dark:hover:text-gray-500"
+					href={challengeSubmissions[0].challenge.targetLink}
+				>
+					{challengeSubmissions[0].challenge.targetLink}
+				</a>
+				)
+			</div>
+
 			<table>
 				<thead>
 					<tr>
 						<th>#</th>
-						<th>Challenge Name</th>
 						<th>Username</th>
 						<th>Status</th>
 						<th>Proof of Exploit</th>
@@ -198,7 +212,6 @@ function ChallengeSubmissionRow({
 	return (
 		<tr key={ch.id}>
 			<td>{ch.id}</td>
-			<td>{ch.challenge.name}</td>
 			<td>{ch.user.username}</td>
 			<td>
 				<span className={`chip ${ch.status.toLowerCase()}`}>
@@ -291,7 +304,7 @@ function ChallengeSubmissionRow({
 											Confirm choosing winner
 										</h2>
 										<div className="h-[1px] w-full bg-gray-300 dark:bg-gray-700 my-2"></div>
-										<p className="py-2 font-bold text-gray-200">
+										<p className="py-2 font-bold text-gray-600 dark:text-gray-200">
 											After marking {ch.user.username} as
 											winner, other requests will
 											automatically reject. Are you sure

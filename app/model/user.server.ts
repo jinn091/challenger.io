@@ -9,6 +9,7 @@ import type { User } from "@prisma/client";
 import { db } from "~/utils/db.server";
 import bcrypt from "bcrypt";
 import { getSession } from "~/utils/session.server";
+import { getImageUrl } from "~/utils/supabase.server";
 
 export type UserInfo = Pick<
 	User,
@@ -196,4 +197,58 @@ export async function updateUserData(
 	} catch (error) {
 		return { ok: false };
 	}
+}
+
+/**
+ * ```getTopAchievementUsers``` is use to fetch the user ranking
+ * @returns
+ */
+export async function getLeaderboard(): Promise<
+	{
+		id: string;
+		username: string;
+		profileImage: string | null;
+		achievements: number;
+		totalPrize: number;
+	}[]
+> {
+	const leaderboard = await db.user.findMany({
+		where: {
+			WinnerChallenge: {
+				some: {} // Ensures the user has won at least one challenge
+			}
+		},
+		select: {
+			id: true,
+			username: true,
+			profileImage: true,
+			WinnerChallenge: {
+				select: {
+					id: true,
+					prize: true
+				}
+			}
+		}
+	});
+
+	// Process and sort data manually
+	const sortedLeaderboard = leaderboard
+		.map(user => ({
+			id: user.id,
+			username: user.username,
+			profileImage: getImageUrl(user.profileImage as string),
+			achievements: user.WinnerChallenge.length,
+			totalPrize: user.WinnerChallenge.reduce(
+				(sum, challenge) => sum + challenge.prize,
+				0
+			)
+		}))
+		.sort((a, b) => {
+			if (b.achievements !== a.achievements) {
+				return b.achievements - a.achievements; // Sort by number of wins first
+			}
+			return b.totalPrize - a.totalPrize; // If same wins, sort by total prize
+		});
+
+	return sortedLeaderboard;
 }

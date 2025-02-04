@@ -12,6 +12,7 @@ import {
 } from "@prisma/client";
 import { WebHackingMethods } from "~/utils/constant";
 import { db } from "~/utils/db.server";
+import { getImageUrl } from "~/utils/supabase.server";
 import { Result } from "~/utils/type.server";
 
 /**
@@ -71,13 +72,18 @@ export async function getChallenges({
 }) {
 	return await db.challenge.findMany({
 		where: {
-			status: status ?? ChallengeStatus.ON_GOING
+			status: status
 		},
 		skip: tab * 8,
 		take: 8,
-		orderBy: {
-			createdAt: "desc"
-		}
+		orderBy: [
+			{
+				status: "asc"
+			},
+			{
+				createdAt: "desc"
+			}
+		]
 	});
 }
 
@@ -198,18 +204,46 @@ export async function updateChallengeById({
 /**
  * ```getWonChallengeByUserId``` function is used to fetch the challenges that user have won
  * @param userId
+ * @param take Count of challenges to retrieve
  * @returns
  */
 export async function getWonChallengesByUserId(
-	userId: string
-): Promise<Challenge[]> {
-	return await db.challenge.findMany({
+	userId: string,
+	take?: number
+): Promise<(Challenge & { submission: ChallengeSubmission })[]> {
+	const challenges = await db.challenge.findMany({
 		where: {
 			winnerId: userId
 		},
 		orderBy: {
 			id: "desc"
 		},
-		take: 2
+		include: {
+			submissions: {
+				where: {
+					userId: userId
+				},
+				take: 1,
+				orderBy: {
+					updatedAt: "desc"
+				}
+			}
+		},
+		take: take
 	});
+
+	// Transform the result to remove the `submissions` array
+	const transformedChallenges = challenges.map(challenge => ({
+		...challenge,
+		submission: challenge.submissions[0] || null,
+		submissions: undefined
+	}));
+
+	for (const challenge of transformedChallenges) {
+		challenge.submission.proofOfExploit = getImageUrl(
+			challenge.submission.proofOfExploit
+		);
+	}
+
+	return transformedChallenges;
 }

@@ -10,6 +10,7 @@ import Battle from "./Battle";
 import LeaderBoard from "./LeaderBoard";
 import Action from "./Action";
 import Edit from "./Edit";
+import Medal from "./Medal";
 export {
 	Class,
 	Challenge,
@@ -22,5 +23,6 @@ export {
 	Battle,
 	LeaderBoard,
 	Action,
-	Edit
+	Edit,
+	Medal
 };
